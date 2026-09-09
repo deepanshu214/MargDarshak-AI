@@ -17,6 +17,7 @@ global.window = {
 
 const { authService, DEMO_GOOGLE_ACCOUNTS } = await import('../services/authService.ts');
 const { databaseService } = await import('../services/databaseService.ts');
+const { verifyGmail, sendOtpEmail } = await import('../services/gmailVerifyServer.ts');
 
 console.log("==================================================================");
 console.log("  🔐 EXTENSIVE AUDIT: GOOGLE AUTHENTICATION & 2FA OTP ENGINE      ");
@@ -108,9 +109,26 @@ async function runAuthTests() {
   assert(dbUser !== null && dbUser.email === googleUser.email.toLowerCase(), "User record persisted and retrievable from database");
 
   // -----------------------------------------------------------------
-  // 5. HIGH-LOAD STRESS TEST (500 Rapid Google Logins & OTPs)
+  // 5. LIVE GOOGLE MAIL SERVER VERIFICATION & DOMAIN VALIDATION
   // -----------------------------------------------------------------
-  console.log("\n[Test 5] Benchmarking 500 Rapid Google Logins with 2FA OTPs...");
+  console.log("\n[Test 5] Auditing Real-Time Google Mail Server (MX) Verification...");
+  
+  // Real Gmail test
+  const realRes = await verifyGmail("deepanshuagarwal@gmail.com");
+  assert(realRes.success && realRes.exists, `Real Gmail verified with Google Mail Servers (${realRes.message})`);
+
+  // Non-existent Gmail test
+  const fakeRes = await verifyGmail("definitelynotarealuser884920182@gmail.com");
+  assert(!fakeRes.exists, `Non-existent Gmail rejected by Google Mail Servers (${fakeRes.message})`);
+
+  // Invalid domain test
+  const invalidDomainRes = await verifyGmail("scholar@nonexistentdomain12398472.com");
+  assert(!invalidDomainRes.success, `Non-existent domain rejected (${invalidDomainRes.message})`);
+
+  // -----------------------------------------------------------------
+  // 6. HIGH-LOAD STRESS TEST (500 Rapid Google Logins & OTPs)
+  // -----------------------------------------------------------------
+  console.log("\n[Test 6] Benchmarking 500 Rapid Google Logins with 2FA OTPs...");
   const t0 = performance.now();
   for (let i = 0; i < 500; i++) {
     const acc = {
