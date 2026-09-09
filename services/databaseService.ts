@@ -11,6 +11,7 @@ export interface Database {
 
 // In-memory cache for ultra-fast synchronous rendering and fallback
 let cachedDB: Database | null = null;
+let persistTimeout: any = null;
 
 export const getDB = (): Database => {
   if (cachedDB) return cachedDB;
@@ -41,12 +42,30 @@ export const getDB = (): Database => {
   return cachedDB;
 };
 
-const persistDB = (db: Database) => {
+// High-performance write-behind coalescing persist
+const persistDB = (db: Database, immediate = false) => {
   cachedDB = db;
-  // Non-blocking durable write to high-capacity storage
-  storageService.set(DB_KEY, db).catch((err) => {
-    console.error("Failed to persist database to storage engine:", err);
-  });
+
+  if (immediate) {
+    if (persistTimeout) clearTimeout(persistTimeout);
+    persistTimeout = null;
+    storageService.set(DB_KEY, db).catch((err) => {
+      console.error("Failed to persist database to storage engine:", err);
+    });
+    return;
+  }
+
+  // Coalesce rapid burst mutations to prevent CPU lockup from repeated serialization
+  if (!persistTimeout) {
+    persistTimeout = setTimeout(() => {
+      persistTimeout = null;
+      if (cachedDB) {
+        storageService.set(DB_KEY, cachedDB).catch((err) => {
+          console.error("Failed to persist coalesced database:", err);
+        });
+      }
+    }, 20);
+  }
 };
 
 export const databaseService = {
@@ -106,7 +125,16 @@ export const databaseService = {
     for (const u of userList) {
       db.users[u.email] = u;
     }
-    persistDB(db);
+    persistDB(db, true); // Immediate commit for batch jobs
+  },
+
+  /**
+   * Force flush any pending coalesced writes
+   */
+  flush: (): void => {
+    if (cachedDB) {
+      persistDB(cachedDB, true);
+    }
   },
 
   /**
@@ -121,6 +149,8 @@ export const databaseService = {
    * Reset database (for testing or user wipe)
    */
   clearDatabase: (): void => {
+    if (persistTimeout) clearTimeout(persistTimeout);
+    persistTimeout = null;
     cachedDB = { users: {} };
     storageService.remove(DB_KEY).catch(() => {});
   }
