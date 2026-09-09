@@ -14,10 +14,33 @@
 
 html, body {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  background-color: var(--study-bg);
+  background-color: #f7f4ed;
+  background-image: 
+    radial-gradient(circle at 90% 8%, rgba(6, 78, 59, 0.13) 0px, transparent 650px),
+    radial-gradient(circle at 10% 12%, rgba(217, 119, 6, 0.13) 0px, transparent 600px),
+    radial-gradient(circle at 85% 85%, rgba(245, 158, 11, 0.08) 0px, transparent 500px),
+    radial-gradient(ellipse at 50% 45%, rgba(255, 253, 245, 0.65) 0%, transparent 80%),
+    linear-gradient(rgba(175, 150, 125, 0.16) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(175, 150, 125, 0.16) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 32px 32px, 32px 32px;
+  background-attachment: fixed;
   color: #1e293b;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+.study-desk-bg {
+  background-color: #f7f4ed !important;
+  background-image: 
+    radial-gradient(circle at 90% 8%, rgba(6, 78, 59, 0.13) 0px, transparent 650px),
+    radial-gradient(circle at 10% 12%, rgba(217, 119, 6, 0.13) 0px, transparent 600px),
+    radial-gradient(circle at 85% 85%, rgba(245, 158, 11, 0.08) 0px, transparent 500px),
+    radial-gradient(ellipse at 50% 45%, rgba(255, 253, 245, 0.65) 0%, transparent 80%),
+    linear-gradient(rgba(175, 150, 125, 0.16) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(175, 150, 125, 0.16) 1px, transparent 1px) !important;
+  background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 32px 32px, 32px 32px !important;
+  background-attachment: fixed !important;
 }
 
 /* Scholarly Headings */

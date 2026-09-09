@@ -243,14 +243,14 @@ const MockTest: React.FC<MockTestProps> = ({ user, updateProfile, strings }) => 
   if (step === 'setup') {
     return (
       <div className="p-4 sm:p-8 max-w-5xl mx-auto flex flex-col items-center justify-center min-h-[80vh] animate-in zoom-in-95 space-y-10">
-        <div className="bg-white p-8 sm:p-14 rounded-3xl shadow-xl border border-slate-100 text-center w-full">
-          <div className="w-16 h-16 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 mx-auto mb-6">
+        <div className="bg-white p-8 sm:p-14 rounded-3xl shadow-xl border border-stone-200/80 text-center w-full">
+          <div className="w-16 h-16 bg-amber-50 border border-amber-200 rounded-2xl flex items-center justify-center text-amber-600 mx-auto mb-6">
             <Trophy className="w-8 h-8" />
           </div>
-          <h1 className="text-3xl sm:text-4xl font-black text-slate-800 tracking-tight mb-3">
+          <h1 className="text-3xl sm:text-4xl font-black text-slate-800 tracking-tight mb-3 font-serif">
             National Talent Evaluation & Mock Assessment
           </h1>
-          <p className="text-slate-500 font-bold text-sm sm:text-base max-w-xl mx-auto mb-10 leading-relaxed">
+          <p className="text-stone-500 font-bold text-sm sm:text-base max-w-xl mx-auto mb-10 leading-relaxed">
             30 Timed Questions (10 Aptitude + 20 Subject Specific) • 30 Minutes • Live AI Analysis & Scholarship Matching
           </p>
           
@@ -259,27 +259,27 @@ const MockTest: React.FC<MockTestProps> = ({ user, updateProfile, strings }) => 
               onClick={() => { setEducationLevel('School'); setFieldOfStudy(''); }} 
               className={`p-6 rounded-2xl border-2 transition-all flex flex-col items-center gap-3 ${
                 educationLevel === 'School' 
-                  ? 'border-indigo-600 bg-indigo-50/50 shadow-md ring-4 ring-indigo-50' 
-                  : 'border-slate-100 hover:border-slate-200'
+                  ? 'border-emerald-700 bg-emerald-50/60 shadow-md ring-4 ring-emerald-100' 
+                  : 'border-stone-200 hover:border-stone-300 bg-white'
               }`}
             >
-              <School className="w-8 h-8 text-indigo-600" />
+              <School className="w-8 h-8 text-emerald-800" />
               <span className="font-black text-slate-800 text-base">School Level (Class 9 - 12)</span>
             </button>
             <button 
               onClick={() => { setEducationLevel('College'); setFieldOfStudy(''); }} 
               className={`p-6 rounded-2xl border-2 transition-all flex flex-col items-center gap-3 ${
                 educationLevel === 'College' 
-                  ? 'border-indigo-600 bg-indigo-50/50 shadow-md ring-4 ring-indigo-50' 
-                  : 'border-slate-100 hover:border-slate-200'
+                  ? 'border-emerald-700 bg-emerald-50/60 shadow-md ring-4 ring-emerald-100' 
+                  : 'border-stone-200 hover:border-stone-300 bg-white'
               }`}
             >
-              <GraduationCap className="w-8 h-8 text-indigo-600" />
+              <GraduationCap className="w-8 h-8 text-emerald-800" />
               <span className="font-black text-slate-800 text-base">College & Degree Level</span>
             </button>
           </div>
 
-          <p className="text-[11px] font-black uppercase tracking-widest text-slate-400 mb-4">
+          <p className="text-[11px] font-black uppercase tracking-widest text-stone-400 mb-4 font-mono">
             Select Your Subject Stream / Domain
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-10 max-w-3xl mx-auto">
@@ -289,8 +289,8 @@ const MockTest: React.FC<MockTestProps> = ({ user, updateProfile, strings }) => 
                 onClick={() => setFieldOfStudy(f)} 
                 className={`px-4 py-3.5 rounded-xl font-bold text-xs text-center border-2 transition-all ${
                   fieldOfStudy === f 
-                    ? 'border-indigo-600 bg-indigo-600 text-white shadow-md' 
-                    : 'border-slate-100 bg-slate-50/50 hover:bg-slate-100 text-slate-700'
+                    ? 'border-emerald-800 bg-emerald-800 text-amber-300 shadow-md font-black' 
+                    : 'border-stone-200 bg-stone-50/60 hover:bg-stone-100 text-slate-700'
                 }`}
               >
                 {f}
@@ -303,8 +303,8 @@ const MockTest: React.FC<MockTestProps> = ({ user, updateProfile, strings }) => 
             onClick={handleStartTest} 
             className={`w-full max-w-md py-4 px-8 rounded-2xl font-black text-base transition-all shadow-xl ${
               fieldOfStudy 
-                ? 'bg-indigo-600 hover:bg-indigo-700 text-white active:scale-95' 
-                : 'bg-slate-100 text-slate-400 cursor-not-allowed'
+                ? 'bg-emerald-800 hover:bg-emerald-900 text-amber-300 border border-amber-400/30 active:scale-95' 
+                : 'bg-stone-100 text-stone-400 cursor-not-allowed'
             }`}
           >
             Start Assessment Now
@@ -328,23 +328,23 @@ const MockTest: React.FC<MockTestProps> = ({ user, updateProfile, strings }) => 
       <div className="p-4 sm:p-6 max-w-7xl mx-auto pb-16 space-y-6 animate-in fade-in duration-300">
         
         {/* Test Header */}
-        <div className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-100 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="bg-white rounded-2xl p-4 sm:p-6 border border-stone-200/80 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <span className="bg-indigo-50 text-indigo-700 font-black text-xs px-3 py-1.5 rounded-xl">
+            <span className="bg-emerald-50 text-emerald-800 font-black text-xs px-3 py-1.5 rounded-xl border border-emerald-200 font-mono">
               {currentQ.subject}
             </span>
-            <span className="text-xs font-bold text-slate-400">
+            <span className="text-xs font-bold text-stone-400 font-mono">
               Question {currentIdx + 1} of {sessionQuestions.length}
             </span>
           </div>
 
           {/* Center Timer */}
-          <div className={`flex items-center gap-2 px-5 py-2 rounded-2xl font-black text-sm tracking-wider ${
+          <div className={`flex items-center gap-2 px-5 py-2 rounded-2xl font-black text-sm tracking-wider font-mono ${
             timeLeft < 300 
-              ? 'bg-rose-50 text-rose-600 animate-pulse border border-rose-200' 
-              : 'bg-slate-50 text-slate-700 border border-slate-100'
+              ? 'bg-rose-50 text-rose-700 animate-pulse border border-rose-200' 
+              : 'bg-stone-50 text-stone-700 border border-stone-200'
           }`}>
-            <Clock className="w-4 h-4" />
+            <Clock className="w-4 h-4 text-emerald-700" />
             {formatTime(timeLeft)}
           </div>
 
@@ -352,15 +352,15 @@ const MockTest: React.FC<MockTestProps> = ({ user, updateProfile, strings }) => 
           <div className="flex items-center gap-3">
             <button 
               onClick={() => setTestLang(prev => prev === 'hi' ? 'en' : 'hi')} 
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-50"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-stone-200 text-xs font-bold text-stone-600 hover:bg-stone-50"
               title="Toggle Hindi/English"
             >
-              <Languages className="w-3.5 h-3.5 text-indigo-600" />
+              <Languages className="w-3.5 h-3.5 text-emerald-700" />
               {testLang === 'hi' ? 'English' : 'हिन्दी'}
             </button>
             <button 
               onClick={() => setShowSubmitModal(true)} 
-              className="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-black shadow-md transition-all active:scale-95"
+              className="px-5 py-2 bg-emerald-800 hover:bg-emerald-900 text-amber-300 rounded-xl text-xs font-black shadow-sm border border-amber-400/30 transition-all active:scale-95"
             >
               Submit Test
             </button>
@@ -371,27 +371,27 @@ const MockTest: React.FC<MockTestProps> = ({ user, updateProfile, strings }) => 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           
           {/* Main Question Card */}
-          <div className="lg:col-span-3 bg-white rounded-3xl p-6 sm:p-10 border border-slate-100 shadow-sm flex flex-col justify-between min-h-[500px]">
+          <div className="lg:col-span-3 bg-white rounded-3xl p-6 sm:p-10 border border-stone-200/80 shadow-xs flex flex-col justify-between min-h-[500px]">
             <div>
               <div className="flex items-center justify-between mb-6">
-                <span className="text-xs font-black uppercase text-slate-400 tracking-wider">
+                <span className="text-xs font-black uppercase text-stone-400 tracking-wider font-mono">
                   Q{currentIdx + 1} • {currentQ.type === 'solving' ? 'Numerical / Problem Solving' : 'Concept / Theory'}
                 </span>
                 <button 
                   onClick={() => toggleReviewMark(currentQ.id)} 
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-colors ${
                     isMarked 
-                      ? 'bg-amber-100 text-amber-700 border border-amber-300' 
-                      : 'bg-slate-50 text-slate-400 hover:text-slate-600'
+                      ? 'bg-amber-100 text-amber-800 border border-amber-300' 
+                      : 'bg-stone-50 text-stone-400 hover:text-stone-600'
                   }`}
                 >
-                  <Bookmark className="w-3.5 h-3.5" />
+                  <Bookmark className="w-3.5 h-3.5 text-amber-600" />
                   {isMarked ? 'Marked for Review' : 'Mark for Review'}
                 </button>
               </div>
 
               {/* Question Text */}
-              <h2 className="text-lg sm:text-xl font-black text-slate-800 leading-relaxed mb-8">
+              <h2 className="text-lg sm:text-xl font-bold text-slate-800 leading-relaxed mb-8">
                 {qText}
               </h2>
 
@@ -405,19 +405,19 @@ const MockTest: React.FC<MockTestProps> = ({ user, updateProfile, strings }) => 
                       onClick={() => selectOption(oIdx)}
                       className={`w-full p-4 sm:p-5 rounded-2xl border-2 text-left font-bold text-sm sm:text-base transition-all flex items-center justify-between ${
                         isSelected 
-                          ? 'border-indigo-600 bg-indigo-50/60 text-indigo-900 shadow-sm' 
-                          : 'border-slate-100 bg-white hover:bg-slate-50/80 text-slate-700'
+                          ? 'border-emerald-700 bg-emerald-50/60 text-emerald-950 shadow-xs ring-2 ring-emerald-100' 
+                          : 'border-stone-200 bg-white hover:bg-stone-50/80 text-slate-700'
                       }`}
                     >
                       <div className="flex items-center gap-4">
                         <span className={`w-8 h-8 rounded-xl flex items-center justify-center font-black text-xs shrink-0 ${
-                          isSelected ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-500'
+                          isSelected ? 'bg-emerald-800 text-amber-300' : 'bg-stone-100 text-stone-500'
                         }`}>
                           {String.fromCharCode(65 + oIdx)}
                         </span>
                         <span>{opt}</span>
                       </div>
-                      {isSelected && <CheckCircle className="w-5 h-5 text-indigo-600 shrink-0" />}
+                      {isSelected && <CheckCircle className="w-5 h-5 text-emerald-700 shrink-0" />}
                     </button>
                   );
                 })}
@@ -425,34 +425,34 @@ const MockTest: React.FC<MockTestProps> = ({ user, updateProfile, strings }) => 
             </div>
 
             {/* Navigation Bottom Controls */}
-            <div className="pt-6 border-t border-slate-100 flex items-center justify-between">
+            <div className="pt-6 border-t border-stone-100 flex items-center justify-between">
               <button
                 disabled={currentIdx === 0}
                 onClick={() => setCurrentIdx(prev => Math.max(0, prev - 1))}
                 className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-xs transition-all ${
                   currentIdx === 0 
-                    ? 'text-slate-300 cursor-not-allowed' 
-                    : 'text-slate-600 hover:bg-slate-100'
+                    ? 'text-stone-300 cursor-not-allowed' 
+                    : 'text-stone-600 hover:bg-stone-100'
                 }`}
               >
                 <ArrowLeft className="w-4 h-4" /> Previous
               </button>
 
-              <span className="text-xs font-bold text-slate-400">
+              <span className="text-xs font-bold text-stone-400 font-mono">
                 {answeredCount} of {sessionQuestions.length} Answered
               </span>
 
               {currentIdx < sessionQuestions.length - 1 ? (
                 <button
                   onClick={() => setCurrentIdx(prev => prev + 1)}
-                  className="flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-xs shadow-md transition-all"
+                  className="flex items-center gap-2 px-6 py-3 bg-emerald-800 hover:bg-emerald-900 text-amber-300 rounded-xl font-bold text-xs shadow-sm border border-amber-400/30 transition-all"
                 >
                   Next <ArrowRight className="w-4 h-4" />
                 </button>
               ) : (
                 <button
                   onClick={() => setShowSubmitModal(true)}
-                  className="flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs shadow-md transition-all"
+                  className="flex items-center gap-2 px-6 py-3 bg-emerald-800 hover:bg-emerald-900 text-amber-300 rounded-xl font-bold text-xs shadow-sm border border-amber-400/30 transition-all"
                 >
                   Review & Submit <CheckCircle className="w-4 h-4" />
                 </button>
@@ -463,7 +463,7 @@ const MockTest: React.FC<MockTestProps> = ({ user, updateProfile, strings }) => 
           {/* Question Palette / Drawer */}
           <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm flex flex-col justify-between">
             <div>
-              <h3 className="text-xs font-black uppercase text-slate-400 tracking-wider mb-4">
+              <h3 className="text-xs font-black uppercase text-stone-400 tracking-wider mb-4 font-mono">
                 Question Palette
               </h3>
               
@@ -473,16 +473,16 @@ const MockTest: React.FC<MockTestProps> = ({ user, updateProfile, strings }) => 
                   const isRev = markedForReview.has(q.id);
                   const isCurrent = idx === currentIdx;
 
-                  let colorClass = 'bg-slate-100 text-slate-500';
-                  if (hasAnswered) colorClass = 'bg-emerald-600 text-white';
-                  if (isRev) colorClass = 'bg-amber-500 text-white';
+                  let colorClass = 'bg-stone-100 text-stone-600';
+                  if (hasAnswered) colorClass = 'bg-emerald-700 text-white';
+                  if (isRev) colorClass = 'bg-amber-500 text-stone-900 font-black';
 
                   return (
                     <button
                       key={q.id}
                       onClick={() => setCurrentIdx(idx)}
                       className={`h-9 rounded-xl font-black text-xs transition-all ${colorClass} ${
-                        isCurrent ? 'ring-4 ring-indigo-400/50 scale-105' : 'hover:opacity-80'
+                        isCurrent ? 'ring-4 ring-emerald-500/50 scale-105' : 'hover:opacity-80'
                       }`}
                     >
                       {idx + 1}
@@ -492,9 +492,9 @@ const MockTest: React.FC<MockTestProps> = ({ user, updateProfile, strings }) => 
               </div>
 
               {/* Legend */}
-              <div className="space-y-2 pt-4 border-t border-slate-100 text-[11px] font-bold text-slate-500">
+              <div className="space-y-2 pt-4 border-t border-stone-100 text-[11px] font-bold text-stone-500">
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded bg-emerald-600"></div>
+                  <div className="w-3 h-3 rounded bg-emerald-700"></div>
                   <span>Answered ({answeredCount})</span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -502,7 +502,7 @@ const MockTest: React.FC<MockTestProps> = ({ user, updateProfile, strings }) => 
                   <span>Marked for Review ({markedForReview.size})</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded bg-slate-200"></div>
+                  <div className="w-3 h-3 rounded bg-stone-200"></div>
                   <span>Unanswered ({sessionQuestions.length - answeredCount})</span>
                 </div>
               </div>
@@ -510,7 +510,7 @@ const MockTest: React.FC<MockTestProps> = ({ user, updateProfile, strings }) => 
 
             <button
               onClick={() => setShowSubmitModal(true)}
-              className="mt-6 w-full py-3 bg-slate-900 hover:bg-black text-white font-black text-xs rounded-xl shadow-md transition-colors"
+              className="mt-6 w-full py-3 bg-stone-800 hover:bg-stone-900 text-amber-300 font-black text-xs rounded-xl shadow-xs transition-colors"
             >
               End Assessment
             </button>
@@ -519,28 +519,28 @@ const MockTest: React.FC<MockTestProps> = ({ user, updateProfile, strings }) => 
 
         {/* Submit Confirmation Modal */}
         {showSubmitModal && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-in fade-in">
-            <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl border border-slate-100 space-y-6">
-              <div className="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center">
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-in fade-in">
+            <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl border border-stone-200 space-y-6">
+              <div className="w-12 h-12 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center border border-amber-200">
                 <AlertTriangle className="w-6 h-6" />
               </div>
               <div>
-                <h3 className="text-xl font-black text-slate-800">Submit Assessment?</h3>
-                <p className="text-xs font-bold text-slate-400 mt-1">
-                  You have answered <span className="text-indigo-600">{answeredCount}</span> of <span className="text-indigo-600">{sessionQuestions.length}</span> questions.
+                <h3 className="text-xl font-black text-slate-800 font-serif">Submit Assessment?</h3>
+                <p className="text-xs font-bold text-stone-500 mt-1">
+                  You have answered <span className="text-emerald-700 font-black">{answeredCount}</span> of <span className="text-emerald-700 font-black">{sessionQuestions.length}</span> questions.
                   {markedForReview.size > 0 && ` (${markedForReview.size} questions still marked for review)`}
                 </p>
               </div>
               <div className="flex gap-3">
                 <button
                   onClick={() => setShowSubmitModal(false)}
-                  className="flex-1 py-3 border border-slate-200 text-slate-700 font-bold rounded-xl text-xs hover:bg-slate-50"
+                  className="flex-1 py-3 border border-stone-200 text-stone-700 font-bold rounded-xl text-xs hover:bg-stone-50"
                 >
                   Continue Testing
                 </button>
                 <button
                   onClick={handleFinish}
-                  className="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-xl text-xs shadow-md"
+                  className="flex-1 py-3 bg-emerald-800 hover:bg-emerald-900 text-amber-300 font-black rounded-xl text-xs shadow-sm border border-amber-400/30"
                 >
                   Yes, Submit
                 </button>
@@ -558,25 +558,25 @@ const MockTest: React.FC<MockTestProps> = ({ user, updateProfile, strings }) => 
     <div className="p-4 sm:p-8 max-w-5xl mx-auto pb-20 space-y-8 animate-in fade-in duration-500">
       
       {/* Result Hero */}
-      <div className="bg-gradient-to-br from-indigo-900 via-indigo-800 to-blue-900 rounded-3xl p-8 sm:p-12 text-white shadow-2xl relative overflow-hidden">
+      <div className="bg-gradient-to-br from-emerald-900 via-emerald-800 to-slate-900 rounded-3xl p-8 sm:p-12 text-white shadow-2xl relative overflow-hidden border border-emerald-950">
         <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
           <div>
-            <span className="bg-white/20 backdrop-blur-md px-3.5 py-1 rounded-full text-xs font-black uppercase tracking-wider text-amber-300">
+            <span className="bg-white/10 backdrop-blur-md px-3.5 py-1 rounded-full text-xs font-black uppercase tracking-wider text-amber-300 border border-white/10 font-mono">
               Assessment Completed
             </span>
-            <h2 className="text-3xl sm:text-4xl font-black mt-3">{fieldOfStudy} Evaluation</h2>
-            <p className="text-indigo-200 font-bold text-xs sm:text-sm mt-1">
+            <h2 className="text-3xl sm:text-4xl font-black mt-3 font-serif">{fieldOfStudy} Evaluation</h2>
+            <p className="text-emerald-200 font-bold text-xs sm:text-sm mt-1">
               {new Date().toLocaleDateString([], { month: 'long', day: 'numeric', year: 'numeric' })}
             </p>
           </div>
 
           <div className="flex items-center gap-6">
             <div className="text-center bg-white/10 backdrop-blur-md p-5 rounded-2xl border border-white/10">
-              <p className="text-[10px] font-black uppercase tracking-widest text-indigo-300">Accuracy</p>
-              <p className="text-3xl sm:text-4xl font-black text-emerald-400 mt-1">{lastTest?.accuracy || 0}%</p>
+              <p className="text-[10px] font-black uppercase tracking-widest text-emerald-200 font-mono">Accuracy</p>
+              <p className="text-3xl sm:text-4xl font-black text-emerald-300 mt-1">{lastTest?.accuracy || 0}%</p>
             </div>
             <div className="text-center bg-white/10 backdrop-blur-md p-5 rounded-2xl border border-white/10">
-              <p className="text-[10px] font-black uppercase tracking-widest text-indigo-300">National Percentile</p>
+              <p className="text-[10px] font-black uppercase tracking-widest text-amber-200 font-mono">National Percentile</p>
               <p className="text-3xl sm:text-4xl font-black text-amber-300 mt-1">Top {100 - computedPercentile}%</p>
             </div>
           </div>
@@ -585,18 +585,18 @@ const MockTest: React.FC<MockTestProps> = ({ user, updateProfile, strings }) => 
 
       {/* Breakdown Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-        <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm text-center">
-          <p className="text-xs font-black uppercase text-slate-400">Total Score</p>
-          <p className="text-3xl font-black text-indigo-600 mt-2">{lastTest?.score || 0} Pts</p>
+        <div className="bg-white rounded-3xl p-6 border border-stone-200/80 shadow-xs text-center">
+          <p className="text-xs font-black uppercase text-stone-400 font-mono">Total Score</p>
+          <p className="text-3xl font-black text-emerald-700 mt-2">{lastTest?.score || 0} Pts</p>
         </div>
-        <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm text-center">
-          <p className="text-xs font-black uppercase text-slate-400">Subject Knowledge</p>
+        <div className="bg-white rounded-3xl p-6 border border-stone-200/80 shadow-xs text-center">
+          <p className="text-xs font-black uppercase text-stone-400 font-mono">Subject Knowledge</p>
           <p className="text-3xl font-black text-slate-800 mt-2">
             {lastTest?.breakdown.subjectCorrect || 0}/{lastTest?.breakdown.subjectTotal || 0}
           </p>
         </div>
-        <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm text-center">
-          <p className="text-xs font-black uppercase text-slate-400">Logical Aptitude</p>
+        <div className="bg-white rounded-3xl p-6 border border-stone-200/80 shadow-xs text-center">
+          <p className="text-xs font-black uppercase text-stone-400 font-mono">Logical Aptitude</p>
           <p className="text-3xl font-black text-slate-800 mt-2">
             {lastTest?.breakdown.logicalCorrect || 0}/{lastTest?.breakdown.logicalTotal || 0}
           </p>
@@ -605,19 +605,19 @@ const MockTest: React.FC<MockTestProps> = ({ user, updateProfile, strings }) => 
 
       {/* AI Diagnostics */}
       {isLoadingFeedback ? (
-        <div className="bg-white rounded-3xl p-12 text-center border border-slate-100 shadow-sm space-y-4">
-          <Loader2 className="w-8 h-8 animate-spin text-indigo-600 mx-auto" />
+        <div className="bg-white rounded-3xl p-12 text-center border border-stone-200/80 shadow-xs space-y-4">
+          <Loader2 className="w-8 h-8 animate-spin text-emerald-700 mx-auto" />
           <p className="text-sm font-black text-slate-700">MargDarshak AI is evaluating your performance insights...</p>
         </div>
       ) : detailedAnalysis && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm space-y-6">
-            <h4 className="text-base font-black text-slate-800 flex items-center gap-2">
-              <BrainCircuit className="w-5 h-5 text-indigo-600" /> AI Diagnostic Analysis
+          <div className="bg-white rounded-3xl p-8 border border-stone-200/80 shadow-xs space-y-6">
+            <h4 className="text-base font-black text-slate-800 flex items-center gap-2 font-serif">
+              <BrainCircuit className="w-5 h-5 text-emerald-700" /> AI Diagnostic Analysis
             </h4>
             <div className="space-y-4">
               <div className="bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100">
-                <p className="text-[10px] font-black uppercase tracking-wider text-emerald-700 mb-2">Strengths</p>
+                <p className="text-[10px] font-black uppercase tracking-wider text-emerald-800 mb-2 font-mono">Strengths</p>
                 <ul className="space-y-1 text-xs font-bold text-slate-700">
                   {detailedAnalysis.strengths?.map((s: string, i: number) => (
                     <li key={i} className="flex items-center gap-2">
@@ -627,7 +627,7 @@ const MockTest: React.FC<MockTestProps> = ({ user, updateProfile, strings }) => 
                 </ul>
               </div>
               <div className="bg-rose-50/50 p-4 rounded-2xl border border-rose-100">
-                <p className="text-[10px] font-black uppercase tracking-wider text-rose-700 mb-2">Areas for Improvement</p>
+                <p className="text-[10px] font-black uppercase tracking-wider text-rose-700 mb-2 font-mono">Areas for Improvement</p>
                 <ul className="space-y-1 text-xs font-bold text-slate-700">
                   {detailedAnalysis.weaknesses?.map((w: string, i: number) => (
                     <li key={i} className="flex items-center gap-2">
@@ -636,17 +636,17 @@ const MockTest: React.FC<MockTestProps> = ({ user, updateProfile, strings }) => 
                   ))}
                 </ul>
               </div>
-              <div className="p-4 rounded-2xl bg-indigo-50/50 border border-indigo-100 text-xs text-slate-700">
-                <p className="font-black text-indigo-700 uppercase text-[10px] mb-1">Career Fit Assessment</p>
-                <p className="font-bold italic">"{detailedAnalysis.careerFit}"</p>
+              <div className="p-4 rounded-2xl bg-amber-50/50 border border-amber-200 text-xs text-slate-700">
+                <p className="font-black text-amber-800 uppercase text-[10px] mb-1 font-mono">Career Fit Assessment</p>
+                <p className="font-bold italic text-stone-800">"{detailedAnalysis.careerFit}"</p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm space-y-6 flex flex-col justify-between">
+          <div className="bg-white rounded-3xl p-8 border border-stone-200/80 shadow-xs space-y-6 flex flex-col justify-between">
             <div>
-              <h4 className="text-base font-black text-slate-800 flex items-center gap-2 mb-4">
-                <BookOpen className="w-5 h-5 text-indigo-600" /> Curated Free Learning Resources
+              <h4 className="text-base font-black text-slate-800 flex items-center gap-2 mb-4 font-serif">
+                <BookOpen className="w-5 h-5 text-emerald-700" /> Curated Free Learning Resources
               </h4>
               <div className="space-y-3">
                 {recommendedResources.map((res: any, idx: number) => (
@@ -655,22 +655,22 @@ const MockTest: React.FC<MockTestProps> = ({ user, updateProfile, strings }) => 
                     href={res.link}
                     target="_blank"
                     rel="noreferrer"
-                    className="p-3.5 rounded-2xl border border-slate-100 hover:border-indigo-300 hover:bg-slate-50 flex items-center justify-between transition-all block"
+                    className="p-3.5 rounded-2xl border border-stone-200 hover:border-emerald-500 hover:bg-emerald-50/20 flex items-center justify-between transition-all block"
                   >
                     <div>
                       <p className="text-xs font-black text-slate-800">{res.name}</p>
-                      <p className="text-[10px] font-bold text-slate-400 mt-0.5">{res.description}</p>
+                      <p className="text-[10px] font-bold text-stone-400 mt-0.5">{res.description}</p>
                     </div>
-                    <span className="text-indigo-600 text-xs font-bold shrink-0 ml-3">Explore →</span>
+                    <span className="text-emerald-700 text-xs font-bold shrink-0 ml-3">Explore →</span>
                   </a>
                 ))}
               </div>
             </div>
 
-            <div className="pt-6 border-t border-slate-100 flex gap-4">
+            <div className="pt-6 border-t border-stone-100 flex gap-4">
               <button 
                 onClick={() => setStep('setup')}
-                className="flex-1 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs rounded-xl shadow-md transition-all active:scale-95"
+                className="flex-1 py-3.5 bg-emerald-800 hover:bg-emerald-900 text-amber-300 font-black text-xs rounded-xl shadow-sm border border-amber-400/30 transition-all active:scale-95"
               >
                 Take Another Assessment
               </button>

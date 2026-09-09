@@ -170,7 +170,7 @@ const App: React.FC = () => {
           setUser(u);
         }} />
       ) : (
-        <div className={`min-h-screen bg-[#fbf9f5] flex font-sans text-slate-900 ${isRTL ? 'flex-row-reverse text-right' : ''}`} dir={isRTL ? 'rtl' : 'ltr'}>
+        <div className={`min-h-screen study-desk-bg flex font-sans text-slate-900 ${isRTL ? 'flex-row-reverse text-right' : ''}`} dir={isRTL ? 'rtl' : 'ltr'}>
           {/* ACADEMIC SCHOLAR SIDEBAR */}
           <aside className={`fixed inset-y-0 ${isRTL ? 'right-0' : 'left-0'} z-50 w-72 bg-[#082218] border-${isRTL ? 'l' : 'r'} border-emerald-900/60 transform transition-all duration-500 ease-in-out md:relative md:translate-x-0 ${isSidebarOpen ? 'translate-x-0 shadow-2xl' : (isRTL ? 'translate-x-full md:translate-x-0' : '-translate-x-full md:translate-x-0')} flex flex-col`}>
             
@@ -377,7 +377,7 @@ const App: React.FC = () => {
             </header>
 
             {/* Content Desk */}
-            <main className="flex-1 overflow-y-auto bg-[#fbf9f5] scroll-smooth p-0">
+            <main className="flex-1 overflow-y-auto study-desk-bg scroll-smooth p-0">
               <Routes>
                 <Route path="/" element={<Home user={user} strings={strings} />} />
                 <Route path="/schemes" element={<Dashboard user={user} updateProfile={updateProfile} strings={strings} />} />

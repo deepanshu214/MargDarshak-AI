@@ -64,28 +64,28 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ user, strings }) => {
     <div className="p-4 sm:p-8 max-w-6xl mx-auto pb-24 space-y-10 animate-in fade-in duration-500">
       
       {/* Hero Header */}
-      <div className="bg-gradient-to-r from-indigo-900 via-indigo-800 to-blue-900 rounded-3xl p-6 sm:p-10 text-white shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div className="bg-gradient-to-br from-emerald-900 via-emerald-800 to-slate-900 rounded-3xl p-6 sm:p-10 text-white shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6 border border-emerald-950">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur-md rounded-full text-[11px] font-black uppercase tracking-wider text-amber-300 border border-white/10 mb-3">
-            <Trophy className="w-3.5 h-3.5" /> National Merit & Talent Rankings
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur-md rounded-full text-[11px] font-black uppercase tracking-wider text-amber-300 border border-white/10 mb-3 font-mono">
+            <Trophy className="w-3.5 h-3.5 text-amber-400" /> National Merit & Talent Rankings
           </div>
-          <h1 className="text-3xl sm:text-4xl font-black tracking-tight">
+          <h1 className="text-3xl sm:text-4xl font-black tracking-tight font-serif">
             Scholastic Leaderboard
           </h1>
-          <p className="text-indigo-200 text-xs sm:text-sm font-bold mt-1.5 max-w-xl">
+          <p className="text-emerald-100/80 text-xs sm:text-sm font-medium mt-1.5 max-w-xl leading-relaxed">
             Recognizing academic excellence, consistency, and problem-solving talent among India's brightest aspirants.
           </p>
         </div>
 
         {/* User Current Rank Chip */}
         <div className="bg-white/10 backdrop-blur-md p-5 rounded-2xl border border-white/10 flex items-center gap-4 shrink-0">
-          <div className="w-12 h-12 bg-amber-400 text-slate-900 font-black rounded-xl flex items-center justify-center text-lg shadow-md">
+          <div className="w-12 h-12 bg-amber-400 text-slate-900 font-black rounded-xl flex items-center justify-center text-lg shadow-md font-mono">
             #{userRank}
           </div>
           <div>
-            <p className="text-[10px] font-black uppercase tracking-wider text-indigo-200">Your Current Rank</p>
+            <p className="text-[10px] font-black uppercase tracking-wider text-amber-200 font-mono">Your Current Rank</p>
             <p className="text-sm font-black text-white">{user.points || 0} Total XP Points</p>
-            <p className="text-[11px] font-bold text-emerald-400 mt-0.5">Keep testing to climb higher!</p>
+            <p className="text-[11px] font-bold text-emerald-300 mt-0.5">Keep testing to climb higher!</p>
           </div>
         </div>
       </div>
@@ -99,8 +99,8 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ user, strings }) => {
               onClick={() => setScopeFilter(tab)}
               className={`px-4 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider whitespace-nowrap transition-all ${
                 scopeFilter === tab 
-                  ? 'bg-indigo-600 text-white shadow-md' 
-                  : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
+                  ? 'bg-emerald-800 text-amber-300 border border-amber-400/40 shadow-xs' 
+                  : 'bg-white text-stone-700 border border-stone-200 hover:bg-stone-50'
               }`}
             >
               {tab === 'My State' ? `📍 ${user.locality || 'My State'}` : tab}
@@ -109,13 +109,13 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ user, strings }) => {
         </div>
 
         <div className="relative w-full sm:w-72">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             placeholder="Search by student or city..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 bg-white rounded-xl border border-slate-200 font-bold text-xs focus:border-indigo-500 outline-none"
+            className="w-full pl-10 pr-4 py-2.5 bg-white rounded-xl border border-stone-200 font-bold text-xs focus:border-emerald-600 outline-none"
           />
         </div>
       </div>
@@ -125,58 +125,58 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ user, strings }) => {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-4">
           
           {/* Rank 2 - Silver */}
-          <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-md text-center flex flex-col justify-between order-2 sm:order-1 sm:mt-6">
+          <div className="bg-white rounded-3xl p-6 border border-stone-200/80 shadow-xs text-center flex flex-col justify-between order-2 sm:order-1 sm:mt-6">
             <div>
               <div className="w-12 h-12 bg-slate-100 text-slate-500 rounded-2xl flex items-center justify-center font-black text-lg mx-auto mb-3 shadow-inner">
                 🥈 2
               </div>
               <h3 className="font-black text-base text-slate-800">{top3[1].name}</h3>
-              <p className="text-xs font-bold text-slate-400 mt-0.5">{top3[1].locality || 'India'}</p>
+              <p className="text-xs font-bold text-stone-400 mt-0.5">{top3[1].locality || 'India'}</p>
             </div>
-            <div className="mt-4 pt-4 border-t border-slate-50">
-              <p className="text-xl font-black text-indigo-600">{top3[1].totalPoints} XP</p>
-              <p className="text-[10px] font-bold text-slate-400">{top3[1].avgAccuracy}% Accuracy</p>
+            <div className="mt-4 pt-4 border-t border-stone-100">
+              <p className="text-xl font-black text-emerald-800 font-mono">{top3[1].totalPoints} XP</p>
+              <p className="text-[10px] font-bold text-stone-400">{top3[1].avgAccuracy}% Accuracy</p>
             </div>
           </div>
 
           {/* Rank 1 - Gold */}
-          <div className="bg-gradient-to-b from-amber-50 to-white rounded-3xl p-8 border-2 border-amber-300 shadow-xl text-center flex flex-col justify-between order-1 sm:order-2">
+          <div className="bg-gradient-to-b from-amber-50 to-white rounded-3xl p-8 border-2 border-amber-300 shadow-lg text-center flex flex-col justify-between order-1 sm:order-2">
             <div>
               <div className="w-16 h-16 bg-gradient-to-tr from-amber-400 to-yellow-300 text-slate-900 rounded-3xl flex items-center justify-center font-black text-2xl mx-auto mb-3 shadow-lg ring-4 ring-amber-100">
                 👑 1
               </div>
-              <span className="text-[10px] font-black uppercase text-amber-700 bg-amber-100 px-3 py-1 rounded-full">
+              <span className="text-[10px] font-black uppercase text-amber-800 bg-amber-100 px-3 py-1 rounded-full font-mono">
                 National Leader
               </span>
-              <h3 className="font-black text-lg text-slate-800 mt-2">{top3[0].name}</h3>
-              <p className="text-xs font-bold text-slate-400 mt-0.5">{top3[0].locality || 'India'}</p>
+              <h3 className="font-black text-lg text-slate-800 mt-2 font-serif">{top3[0].name}</h3>
+              <p className="text-xs font-bold text-stone-400 mt-0.5">{top3[0].locality || 'India'}</p>
             </div>
             <div className="mt-4 pt-4 border-t border-amber-100">
-              <p className="text-2xl font-black text-amber-600">{top3[0].totalPoints} XP</p>
-              <p className="text-xs font-bold text-slate-500">{top3[0].avgAccuracy}% Mean Accuracy</p>
+              <p className="text-2xl font-black text-amber-700 font-mono">{top3[0].totalPoints} XP</p>
+              <p className="text-xs font-bold text-stone-600">{top3[0].avgAccuracy}% Mean Accuracy</p>
             </div>
           </div>
 
           {/* Rank 3 - Bronze */}
-          <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-md text-center flex flex-col justify-between order-3 sm:order-3 sm:mt-10">
+          <div className="bg-white rounded-3xl p-6 border border-stone-200/80 shadow-xs text-center flex flex-col justify-between order-3 sm:order-3 sm:mt-10">
             <div>
               <div className="w-12 h-12 bg-amber-100 text-amber-800 rounded-2xl flex items-center justify-center font-black text-lg mx-auto mb-3 shadow-inner">
                 🥉 3
               </div>
               <h3 className="font-black text-base text-slate-800">{top3[2].name}</h3>
-              <p className="text-xs font-bold text-slate-400 mt-0.5">{top3[2].locality || 'India'}</p>
+              <p className="text-xs font-bold text-stone-400 mt-0.5">{top3[2].locality || 'India'}</p>
             </div>
-            <div className="mt-4 pt-4 border-t border-slate-50">
-              <p className="text-xl font-black text-indigo-600">{top3[2].totalPoints} XP</p>
-              <p className="text-[10px] font-bold text-slate-400">{top3[2].avgAccuracy}% Accuracy</p>
+            <div className="mt-4 pt-4 border-t border-stone-100">
+              <p className="text-xl font-black text-emerald-800 font-mono">{top3[2].totalPoints} XP</p>
+              <p className="text-[10px] font-bold text-stone-400">{top3[2].avgAccuracy}% Accuracy</p>
             </div>
           </div>
         </div>
       )}
 
       {/* Main Leaderboard List */}
-      <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
-        <div className="p-4 sm:p-6 bg-slate-50 border-b border-slate-100 flex justify-between items-center text-[10px] font-black uppercase tracking-wider text-slate-400">
+      <div className="bg-white rounded-3xl shadow-xs border border-stone-200/80 overflow-hidden">
+        <div className="p-4 sm:p-6 bg-stone-50 border-b border-stone-200/80 flex justify-between items-center text-[10px] font-black uppercase tracking-wider text-stone-400 font-mono">
           <div className="flex items-center gap-8">
             <span className="w-10">Rank</span>
             <span>Scholar Profile</span>
@@ -187,7 +187,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ user, strings }) => {
           </div>
         </div>
 
-        <div className="divide-y divide-slate-100">
+        <div className="divide-y divide-stone-100">
           {rankedUsers.map((u, idx) => {
             const rank = idx + 1;
             const isMe = u.email === user.email;
@@ -196,13 +196,13 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ user, strings }) => {
               <div 
                 key={u.email || idx} 
                 className={`p-4 sm:p-6 flex items-center justify-between transition-colors ${
-                  isMe ? 'bg-indigo-50/70 border-l-4 border-indigo-600' : 'hover:bg-slate-50/60'
+                  isMe ? 'bg-emerald-50/70 border-l-4 border-emerald-700' : 'hover:bg-stone-50/60'
                 }`}
               >
                 {/* Left: Rank + Info */}
                 <div className="flex items-center gap-6 sm:gap-8">
-                  <span className={`w-10 text-sm font-black ${
-                    rank === 1 ? 'text-amber-500' : rank === 2 ? 'text-slate-400' : rank === 3 ? 'text-amber-700' : 'text-slate-400'
+                  <span className={`w-10 text-sm font-black font-mono ${
+                    rank === 1 ? 'text-amber-500' : rank === 2 ? 'text-stone-400' : rank === 3 ? 'text-amber-700' : 'text-stone-400'
                   }`}>
                     #{rank}
                   </span>
@@ -210,13 +210,13 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ user, strings }) => {
                     <div className="flex items-center gap-2">
                       <span className="font-black text-sm text-slate-800">{u.name}</span>
                       {isMe && (
-                        <span className="bg-indigo-600 text-white text-[9px] font-black px-2 py-0.5 rounded-full uppercase">
+                        <span className="bg-emerald-800 text-amber-300 text-[9px] font-black px-2 py-0.5 rounded-full uppercase font-mono">
                           You
                         </span>
                       )}
                     </div>
-                    <p className="text-[11px] font-bold text-slate-400 flex items-center gap-1 mt-0.5">
-                      <MapPin className="w-3 h-3 text-slate-300" />
+                    <p className="text-[11px] font-bold text-stone-400 flex items-center gap-1 mt-0.5">
+                      <MapPin className="w-3 h-3 text-stone-300" />
                       {u.locality || 'India'} • {u.fieldOfStudy || u.educationLevel || 'Student'}
                     </p>
                   </div>
@@ -225,10 +225,10 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ user, strings }) => {
                 {/* Right: Accuracy & XP */}
                 <div className="flex items-center gap-10">
                   <div className="hidden sm:block text-center w-20">
-                    <span className="text-xs font-black text-emerald-600">{u.avgAccuracy}%</span>
+                    <span className="text-xs font-black text-emerald-700">{u.avgAccuracy}%</span>
                   </div>
                   <div className="text-right w-24">
-                    <span className="text-sm font-black text-indigo-600">{u.totalPoints} XP</span>
+                    <span className="text-sm font-black text-emerald-800 font-mono">{u.totalPoints} XP</span>
                   </div>
                 </div>
               </div>

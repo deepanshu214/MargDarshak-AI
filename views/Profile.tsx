@@ -160,10 +160,10 @@ const Profile: React.FC<ProfileProps> = ({ user, setUser, updateProfile, strings
     }
 
     return (
-      <div className="space-y-4 p-6 bg-white rounded-3xl border border-slate-100 shadow-inner max-h-[500px] overflow-y-auto">
+      <div className="space-y-4 p-6 bg-white rounded-3xl border border-stone-200/80 shadow-inner max-h-[500px] overflow-y-auto">
         <div className="flex items-center gap-3 mb-6">
-          <History className="w-5 h-5 text-indigo-600" />
-          <h4 className="text-sm font-black uppercase tracking-widest text-slate-800">Review Answer Key</h4>
+          <History className="w-5 h-5 text-emerald-800" />
+          <h4 className="text-sm font-black uppercase tracking-widest text-slate-800 font-serif">Review Answer Key</h4>
         </div>
         {test.attempts.map((attempt, idx) => {
           const q = MOCK_TEST_QUESTIONS.find(question => question.id === attempt.questionId);
@@ -215,32 +215,32 @@ const Profile: React.FC<ProfileProps> = ({ user, setUser, updateProfile, strings
       
       {/* Profile Header Hero */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-100">
-          <div className="h-44 bg-gradient-to-r from-indigo-700 via-indigo-600 to-blue-600 relative overflow-hidden">
+        <div className="lg:col-span-2 bg-white rounded-3xl overflow-hidden shadow-xl border border-stone-200/80">
+          <div className="h-44 bg-gradient-to-br from-emerald-900 via-emerald-800 to-slate-900 relative overflow-hidden border-b border-emerald-950">
             <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
-            <div className="absolute top-4 right-6 flex items-center gap-2 bg-white/20 backdrop-blur-md px-4 py-1.5 rounded-full text-white text-xs font-black tracking-wider uppercase">
-              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+            <div className="absolute top-4 right-6 flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full text-amber-300 text-xs font-black tracking-wider uppercase border border-white/10 font-mono">
+              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
               {user.locality || "National Scholar"}
             </div>
           </div>
           <div className="px-8 pb-8 -mt-16 relative z-10">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
               <div className="flex flex-col sm:flex-row items-center sm:items-end gap-6 text-center sm:text-left">
-                <div className="w-32 h-32 rounded-3xl bg-white p-2.5 shadow-2xl ring-8 ring-indigo-50 shrink-0">
-                  <div className="w-full h-full bg-gradient-to-br from-indigo-100 to-blue-50 rounded-2xl flex items-center justify-center text-indigo-600">
+                <div className="w-32 h-32 rounded-3xl bg-white p-2.5 shadow-2xl ring-8 ring-amber-100/50 shrink-0 border border-stone-200">
+                  <div className="w-full h-full bg-gradient-to-br from-emerald-100 to-amber-50 rounded-2xl flex items-center justify-center text-emerald-800">
                     <User className="w-16 h-16" />
                   </div>
                 </div>
                 <div>
-                  <h2 className="text-3xl font-black text-slate-800 tracking-tight">{user.name}</h2>
-                  <p className="text-slate-400 font-bold text-xs uppercase tracking-widest mt-1">
+                  <h2 className="text-3xl font-black text-slate-800 tracking-tight font-serif">{user.name}</h2>
+                  <p className="text-stone-400 font-bold text-xs uppercase tracking-widest mt-1 font-mono">
                     {user.educationLevel || 'Student'} • {user.fieldOfStudy || 'General'}
                   </p>
                   <div className="flex items-center gap-2 mt-2 justify-center sm:justify-start">
-                    <span className="bg-indigo-50 text-indigo-700 text-[11px] font-black px-3 py-0.5 rounded-full">
+                    <span className="bg-emerald-50 text-emerald-800 border border-emerald-200 text-[11px] font-black px-3 py-0.5 rounded-full font-mono">
                       {user.points || 0} XP Points
                     </span>
-                    <span className="bg-emerald-50 text-emerald-700 text-[11px] font-black px-3 py-0.5 rounded-full">
+                    <span className="bg-amber-50 text-amber-800 border border-amber-200 text-[11px] font-black px-3 py-0.5 rounded-full font-mono">
                       {user.badges?.length || 0} Badges Earned
                     </span>
                   </div>
@@ -248,7 +248,7 @@ const Profile: React.FC<ProfileProps> = ({ user, setUser, updateProfile, strings
               </div>
               <button 
                 onClick={() => isEditing ? handleSave() : setIsEditing(true)} 
-                className={`px-8 py-3.5 text-white font-black rounded-2xl shadow-lg transition-all active:scale-95 text-sm ${isEditing ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-indigo-600 hover:bg-indigo-700'}`}
+                className={`px-8 py-3.5 font-black rounded-2xl shadow-sm transition-all active:scale-95 text-sm ${isEditing ? 'bg-emerald-700 hover:bg-emerald-800 text-white' : 'bg-emerald-800 hover:bg-emerald-900 text-amber-300 border border-amber-400/30'}`}
               >
                 {isEditing ? 'Save Changes' : 'Edit Profile'}
               </button>
@@ -257,48 +257,48 @@ const Profile: React.FC<ProfileProps> = ({ user, setUser, updateProfile, strings
         </div>
 
         {/* Trust Score & Verification Card */}
-        <div className="bg-white rounded-3xl p-8 shadow-xl border border-slate-100 flex flex-col justify-between">
+        <div className="bg-white rounded-3xl p-8 shadow-xl border border-stone-200/80 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-6">
-              <h3 className="font-black text-slate-800 flex items-center gap-2.5 text-base">
-                <Shield className="w-5 h-5 text-indigo-600" /> MargDarshak Trust Index
+              <h3 className="font-black text-slate-800 flex items-center gap-2.5 text-base font-serif">
+                <Shield className="w-5 h-5 text-emerald-700" /> MargDarshak Trust Index
               </h3>
-              <span className={`text-2xl font-black ${trustScore >= 80 ? 'text-emerald-600' : trustScore >= 50 ? 'text-indigo-600' : 'text-amber-500'}`}>
+              <span className={`text-2xl font-black font-mono ${trustScore >= 80 ? 'text-emerald-700' : trustScore >= 50 ? 'text-amber-600' : 'text-stone-500'}`}>
                 {trustScore}%
               </span>
             </div>
 
             {/* Progress Bar */}
-            <div className="w-full bg-slate-100 h-3 rounded-full overflow-hidden mb-6">
+            <div className="w-full bg-stone-100 h-3 rounded-full overflow-hidden mb-6">
               <div 
-                className={`h-full transition-all duration-700 ${trustScore >= 80 ? 'bg-emerald-500' : trustScore >= 50 ? 'bg-indigo-600' : 'bg-amber-500'}`} 
+                className={`h-full transition-all duration-700 ${trustScore >= 80 ? 'bg-emerald-600' : trustScore >= 50 ? 'bg-amber-500' : 'bg-stone-400'}`} 
                 style={{ width: `${trustScore}%` }}
               ></div>
             </div>
 
             <div className="space-y-2.5">
-              <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 text-xs font-bold text-slate-700">
-                <span className="flex items-center gap-2"><MapPin className="w-3.5 h-3.5 text-indigo-500" /> State & Domicile</span>
-                {user.locality ? <Check className="w-4 h-4 text-emerald-500" /> : <span className="text-amber-500 text-[10px]">Pending</span>}
+              <div className="flex items-center justify-between p-3 rounded-xl bg-stone-50 border border-stone-200 text-xs font-bold text-slate-700">
+                <span className="flex items-center gap-2"><MapPin className="w-3.5 h-3.5 text-emerald-700" /> State & Domicile</span>
+                {user.locality ? <Check className="w-4 h-4 text-emerald-600" /> : <span className="text-amber-600 text-[10px]">Pending</span>}
               </div>
-              <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 text-xs font-bold text-slate-700">
-                <span className="flex items-center gap-2"><Wallet className="w-3.5 h-3.5 text-indigo-500" /> Income & Caste Declared</span>
-                {user.caste && user.income ? <Check className="w-4 h-4 text-emerald-500" /> : <span className="text-amber-500 text-[10px]">Pending</span>}
+              <div className="flex items-center justify-between p-3 rounded-xl bg-stone-50 border border-stone-200 text-xs font-bold text-slate-700">
+                <span className="flex items-center gap-2"><Wallet className="w-3.5 h-3.5 text-emerald-700" /> Income & Caste Declared</span>
+                {user.caste && user.income ? <Check className="w-4 h-4 text-emerald-600" /> : <span className="text-amber-600 text-[10px]">Pending</span>}
               </div>
-              <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 text-xs font-bold text-slate-700">
-                <span className="flex items-center gap-2"><FileCheck className="w-3.5 h-3.5 text-indigo-500" /> AI Document Verification</span>
+              <div className="flex items-center justify-between p-3 rounded-xl bg-stone-50 border border-stone-200 text-xs font-bold text-slate-700">
+                <span className="flex items-center gap-2"><FileCheck className="w-3.5 h-3.5 text-emerald-700" /> AI Document Verification</span>
                 {(Object.values(user.verifiedDocuments || {}) as any[]).some(d => d.status === 'verified') ? (
-                  <Check className="w-4 h-4 text-emerald-500" />
+                  <Check className="w-4 h-4 text-emerald-600" />
                 ) : (
-                  <span className="text-amber-500 text-[10px]">Upload Docs</span>
+                  <span className="text-amber-600 text-[10px]">Upload Docs</span>
                 )}
               </div>
             </div>
           </div>
 
-          <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
-            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Tier Status</span>
-            <span className="text-xs font-black text-indigo-700 bg-indigo-50 px-3 py-1 rounded-full">
+          <div className="mt-6 pt-4 border-t border-stone-100 flex items-center justify-between">
+            <span className="text-[11px] font-bold text-stone-400 uppercase tracking-wider font-mono">Tier Status</span>
+            <span className="text-xs font-black text-emerald-800 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full font-mono">
               {trustScore >= 80 ? "Platinum Verified" : trustScore >= 50 ? "Gold Scholar" : "Silver Aspirant"}
             </span>
           </div>
@@ -306,36 +306,36 @@ const Profile: React.FC<ProfileProps> = ({ user, setUser, updateProfile, strings
       </div>
 
       {/* Navigation Tabs */}
-      <div className="flex gap-4 sm:gap-8 border-b border-slate-200 overflow-x-auto pb-1">
+      <div className="flex gap-4 sm:gap-8 border-b border-stone-200 overflow-x-auto pb-1">
         <button 
           onClick={() => setActiveTab('details')} 
-          className={`pb-3 text-xs sm:text-sm font-black uppercase tracking-wider transition-all relative shrink-0 ${activeTab === 'details' ? 'text-indigo-600' : 'text-slate-400 hover:text-slate-600'}`}
+          className={`pb-3 text-xs sm:text-sm font-black uppercase tracking-wider transition-all relative shrink-0 font-mono ${activeTab === 'details' ? 'text-emerald-800' : 'text-stone-400 hover:text-stone-600'}`}
         >
           Profile & Eligibility
-          {activeTab === 'details' && <div className="absolute bottom-0 left-0 w-full h-1 bg-indigo-600 rounded-full"></div>}
+          {activeTab === 'details' && <div className="absolute bottom-0 left-0 w-full h-1 bg-emerald-800 rounded-full"></div>}
         </button>
         <button 
           onClick={() => setActiveTab('documents')} 
-          className={`pb-3 text-xs sm:text-sm font-black uppercase tracking-wider transition-all relative shrink-0 ${activeTab === 'documents' ? 'text-indigo-600' : 'text-slate-400 hover:text-slate-600'}`}
+          className={`pb-3 text-xs sm:text-sm font-black uppercase tracking-wider transition-all relative shrink-0 font-mono ${activeTab === 'documents' ? 'text-emerald-800' : 'text-stone-400 hover:text-stone-600'}`}
         >
           AI Document Verification Hub
-          {activeTab === 'documents' && <div className="absolute bottom-0 left-0 w-full h-1 bg-indigo-600 rounded-full"></div>}
+          {activeTab === 'documents' && <div className="absolute bottom-0 left-0 w-full h-1 bg-emerald-800 rounded-full"></div>}
         </button>
         <button 
           onClick={() => setActiveTab('history')} 
-          className={`pb-3 text-xs sm:text-sm font-black uppercase tracking-wider transition-all relative shrink-0 ${activeTab === 'history' ? 'text-indigo-600' : 'text-slate-400 hover:text-slate-600'}`}
+          className={`pb-3 text-xs sm:text-sm font-black uppercase tracking-wider transition-all relative shrink-0 font-mono ${activeTab === 'history' ? 'text-emerald-800' : 'text-stone-400 hover:text-stone-600'}`}
         >
           Assessment & Growth
-          {activeTab === 'history' && <div className="absolute bottom-0 left-0 w-full h-1 bg-indigo-600 rounded-full"></div>}
+          {activeTab === 'history' && <div className="absolute bottom-0 left-0 w-full h-1 bg-emerald-800 rounded-full"></div>}
         </button>
       </div>
 
       {/* Tab 1: Profile & Eligibility */}
       {activeTab === 'details' && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-in slide-in-from-bottom-3 duration-400">
-          <div className="bg-white p-8 sm:p-10 rounded-3xl border border-slate-100 shadow-sm space-y-6">
-            <h3 className="font-black text-slate-400 text-xs uppercase tracking-widest flex items-center gap-2">
-              <User className="w-4 h-4 text-indigo-600" /> Academic & Personal Information
+          <div className="bg-white p-8 sm:p-10 rounded-3xl border border-stone-200/80 shadow-sm space-y-6">
+            <h3 className="font-black text-stone-500 text-xs uppercase tracking-widest flex items-center gap-2 font-mono">
+              <User className="w-4 h-4 text-emerald-800" /> Academic & Personal Information
             </h3>
             <div className="space-y-6">
               <ProfileField label="Full Name" value={formData.name} isEditing={isEditing} onChange={(v: string) => setFormData({...formData, name: v})} />
@@ -357,9 +357,9 @@ const Profile: React.FC<ProfileProps> = ({ user, setUser, updateProfile, strings
             </div>
           </div>
 
-          <div className="bg-white p-8 sm:p-10 rounded-3xl border border-slate-100 shadow-sm space-y-6">
-            <h3 className="font-black text-slate-400 text-xs uppercase tracking-widest flex items-center gap-2">
-              <Wallet className="w-4 h-4 text-indigo-600" /> Socio-Economic & Scholarship Criteria
+          <div className="bg-white p-8 sm:p-10 rounded-3xl border border-stone-200/80 shadow-sm space-y-6">
+            <h3 className="font-black text-stone-500 text-xs uppercase tracking-widest flex items-center gap-2 font-mono">
+              <Wallet className="w-4 h-4 text-emerald-800" /> Socio-Economic & Scholarship Criteria
             </h3>
             <div className="space-y-6">
               <ProfileField 
@@ -394,18 +394,18 @@ const Profile: React.FC<ProfileProps> = ({ user, setUser, updateProfile, strings
       {/* Tab 2: AI Document Verification Hub */}
       {activeTab === 'documents' && (
         <div className="space-y-8 animate-in slide-in-from-bottom-3 duration-400">
-          <div className="bg-gradient-to-r from-indigo-50 via-white to-blue-50 p-6 sm:p-8 rounded-3xl border border-indigo-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div className="bg-gradient-to-r from-emerald-50/70 via-white to-amber-50/50 p-6 sm:p-8 rounded-3xl border border-emerald-200 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div className="space-y-2">
-              <h3 className="text-xl font-black text-slate-800 flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-indigo-600" /> Multimodal AI Document Verification
+              <h3 className="text-xl font-black text-slate-800 flex items-center gap-2 font-serif">
+                <Sparkles className="w-5 h-5 text-emerald-700" /> Multimodal AI Document Verification
               </h3>
-              <p className="text-xs font-bold text-slate-500 max-w-2xl leading-relaxed">
+              <p className="text-xs font-bold text-stone-600 max-w-2xl leading-relaxed">
                 Upload your certificates or IDs. MargDarshak uses Google Gemini Vision to verify certificate legitimacy, extract income cutoffs, validate student names, and auto-qualify you for central NSP & CSR scholarships.
               </p>
             </div>
             {docUploadFeedback && (
-              <div className="bg-indigo-600 text-white text-xs font-bold px-4 py-3 rounded-2xl shadow-lg flex items-center gap-2 animate-in fade-in">
-                <Loader2 className="w-4 h-4 animate-spin shrink-0" />
+              <div className="bg-emerald-800 text-amber-300 text-xs font-bold px-4 py-3 rounded-2xl shadow-sm border border-amber-400/30 flex items-center gap-2 animate-in fade-in">
+                <Loader2 className="w-4 h-4 animate-spin shrink-0 text-amber-300" />
                 {docUploadFeedback}
               </div>
             )}
@@ -417,19 +417,19 @@ const Profile: React.FC<ProfileProps> = ({ user, setUser, updateProfile, strings
               const isVerifyingThis = isAnalyzingDoc === slot.id;
 
               return (
-                <div key={slot.id} className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-100 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+                <div key={slot.id} className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200/80 shadow-xs flex flex-col justify-between hover:shadow-md transition-shadow">
                   <div>
                     <div className="flex items-start justify-between gap-4 mb-4">
                       <div>
-                        <h4 className="text-base font-black text-slate-800">{slot.label}</h4>
-                        <p className="text-xs font-bold text-slate-400 mt-1 leading-relaxed">{slot.desc}</p>
+                        <h4 className="text-base font-black text-slate-800 font-serif">{slot.label}</h4>
+                        <p className="text-xs font-bold text-stone-400 mt-1 leading-relaxed">{slot.desc}</p>
                       </div>
-                      <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider shrink-0 ${
+                      <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider shrink-0 font-mono ${
                         doc?.status === 'verified' 
-                          ? 'bg-emerald-50 text-emerald-600 border border-emerald-200' 
+                          ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' 
                           : doc?.status === 'pending'
-                          ? 'bg-amber-50 text-amber-600 border border-amber-200'
-                          : 'bg-slate-100 text-slate-500'
+                          ? 'bg-amber-50 text-amber-800 border border-amber-200'
+                          : 'bg-stone-100 text-stone-500'
                       }`}>
                         {doc?.status === 'verified' ? 'Verified' : doc?.status === 'pending' ? 'In Review' : 'Not Uploaded'}
                       </span>
@@ -437,34 +437,34 @@ const Profile: React.FC<ProfileProps> = ({ user, setUser, updateProfile, strings
 
                     {/* Extracted Details Pill */}
                     {doc?.extractedDetails && (
-                      <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 mb-6 space-y-2 text-xs">
+                      <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200 mb-6 space-y-2 text-xs">
                         <div className="flex justify-between items-center">
-                          <span className="text-slate-400 font-bold uppercase text-[9px]">AI Confidence:</span>
-                          <span className="font-black text-indigo-600">{doc.aiConfidenceScore || 85}%</span>
+                          <span className="text-stone-400 font-bold uppercase text-[9px] font-mono">AI Confidence:</span>
+                          <span className="font-black text-emerald-800 font-mono">{doc.aiConfidenceScore || 85}%</span>
                         </div>
                         {doc.extractedDetails.issuingState && (
                           <div className="flex justify-between items-center">
-                            <span className="text-slate-400 font-bold uppercase text-[9px]">Issuing Authority:</span>
+                            <span className="text-stone-400 font-bold uppercase text-[9px] font-mono">Issuing Authority:</span>
                             <span className="font-black text-slate-700">{doc.extractedDetails.issuingState}</span>
                           </div>
                         )}
                         {doc.verificationMessage && (
-                          <p className="text-[11px] font-bold text-emerald-700 mt-1">{doc.verificationMessage}</p>
+                          <p className="text-[11px] font-bold text-emerald-800 mt-1">{doc.verificationMessage}</p>
                         )}
                       </div>
                     )}
                   </div>
 
                   {/* Upload Actions */}
-                  <div className="pt-4 border-t border-slate-50 flex items-center justify-between gap-4">
+                  <div className="pt-4 border-t border-stone-100 flex items-center justify-between gap-4">
                     <label className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl font-black text-xs cursor-pointer transition-all ${
                       isVerifyingThis 
-                        ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
-                        : 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-md active:scale-95'
+                        ? 'bg-stone-100 text-stone-400 cursor-not-allowed'
+                        : 'bg-emerald-800 hover:bg-emerald-900 text-amber-300 shadow-sm border border-amber-400/30 active:scale-95'
                     }`}>
                       {isVerifyingThis ? (
                         <>
-                          <Loader2 className="w-3.5 h-3.5 animate-spin" /> Verifying...
+                          <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-300" /> Verifying...
                         </>
                       ) : (
                         <>
@@ -486,7 +486,7 @@ const Profile: React.FC<ProfileProps> = ({ user, setUser, updateProfile, strings
                         href={doc.dataUrl} 
                         target="_blank" 
                         rel="noreferrer"
-                        className="p-2.5 rounded-xl border border-slate-200 text-slate-500 hover:text-indigo-600 hover:border-indigo-200 transition-colors"
+                        className="p-2.5 rounded-xl border border-stone-200 text-stone-500 hover:text-emerald-800 hover:border-emerald-300 transition-colors"
                         title="View Document"
                       >
                         <Eye className="w-4 h-4" />
@@ -507,12 +507,12 @@ const Profile: React.FC<ProfileProps> = ({ user, setUser, updateProfile, strings
             <div className="bg-white p-8 sm:p-10 rounded-3xl border border-slate-100 shadow-xl">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
                 <div>
-                  <h3 className="text-xl font-black text-slate-800">Academic Progression Tracking</h3>
-                  <p className="text-xs font-bold text-slate-400">Accuracy & Score trajectories across test sessions</p>
+                  <h3 className="text-xl font-black text-slate-800 font-serif">Academic Progression Tracking</h3>
+                  <p className="text-xs font-bold text-stone-400">Accuracy & Score trajectories across test sessions</p>
                 </div>
                 <div className="flex gap-4">
-                  <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-full bg-indigo-600"></div> <span className="text-[10px] font-black uppercase text-slate-400">Score</span></div>
-                  <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-full bg-emerald-500"></div> <span className="text-[10px] font-black uppercase text-slate-400">Accuracy %</span></div>
+                  <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-full bg-emerald-800"></div> <span className="text-[10px] font-black uppercase text-stone-400 font-mono">Score</span></div>
+                  <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-full bg-amber-500"></div> <span className="text-[10px] font-black uppercase text-stone-400 font-mono">Accuracy %</span></div>
                 </div>
               </div>
               <div className="h-64 w-full">
@@ -520,74 +520,74 @@ const Profile: React.FC<ProfileProps> = ({ user, setUser, updateProfile, strings
                   <AreaChart data={chartData}>
                     <defs>
                       <linearGradient id="colorScore" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#4f46e5" stopOpacity={0.3}/>
-                        <stop offset="95%" stopColor="#4f46e5" stopOpacity={0}/>
+                        <stop offset="5%" stopColor="#064e3b" stopOpacity={0.3}/>
+                        <stop offset="95%" stopColor="#064e3b" stopOpacity={0}/>
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
                     <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fontSize: 10, fontWeight: 700, fill: '#94a3b8'}} />
                     <YAxis axisLine={false} tickLine={false} tick={{fontSize: 10, fontWeight: 700, fill: '#94a3b8'}} />
                     <Tooltip 
-                      contentStyle={{borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', padding: '12px'}}
+                      contentStyle={{borderRadius: '16px', border: '1px solid #e2d6c3', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.08)', padding: '12px'}}
                       itemStyle={{fontSize: '10px', fontWeight: 800, textTransform: 'uppercase'}}
                     />
-                    <Area type="monotone" dataKey="score" stroke="#4f46e5" fillOpacity={1} fill="url(#colorScore)" strokeWidth={3} />
-                    <Area type="monotone" dataKey="accuracy" stroke="#10b981" fillOpacity={0} strokeWidth={3} strokeDasharray="5 5" />
+                    <Area type="monotone" dataKey="score" stroke="#064e3b" fillOpacity={1} fill="url(#colorScore)" strokeWidth={3} />
+                    <Area type="monotone" dataKey="accuracy" stroke="#d97706" fillOpacity={0} strokeWidth={3} strokeDasharray="5 5" />
                   </AreaChart>
                 </ResponsiveContainer>
               </div>
             </div>
           ) : (
-            <div className="bg-white p-16 rounded-3xl border-2 border-dashed border-slate-200 text-center">
-              <TrendingUp className="w-12 h-12 mx-auto mb-4 text-slate-300" />
-              <p className="text-slate-500 font-black uppercase tracking-wider text-xs">No Assessment History Recorded</p>
-              <p className="text-xs font-bold text-slate-400 mt-1">Take a talent evaluation test to start tracking your progress!</p>
+            <div className="bg-white p-16 rounded-3xl border-2 border-dashed border-stone-200 text-center">
+              <TrendingUp className="w-12 h-12 mx-auto mb-4 text-stone-300" />
+              <p className="text-stone-500 font-black uppercase tracking-wider text-xs font-mono">No Assessment History Recorded</p>
+              <p className="text-xs font-bold text-stone-400 mt-1">Take a talent evaluation test to start tracking your progress!</p>
             </div>
           )}
 
           {/* Test History List */}
-          <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
-            <div className="p-6 sm:p-8 border-b border-slate-50 flex justify-between items-center">
-              <h3 className="font-black text-slate-800 text-base">Evaluations Taken</h3>
-              <span className="text-[10px] font-black text-slate-400 uppercase bg-slate-50 px-3 py-1 rounded-full">
+          <div className="bg-white rounded-3xl border border-stone-200/80 shadow-sm overflow-hidden">
+            <div className="p-6 sm:p-8 border-b border-stone-100 flex justify-between items-center">
+              <h3 className="font-black text-slate-800 text-base font-serif">Evaluations Taken</h3>
+              <span className="text-[10px] font-black text-stone-400 uppercase bg-stone-50 px-3 py-1 rounded-full font-mono">
                 {user.testHistory?.length || 0} Total Tests
               </span>
             </div>
-            <div className="divide-y divide-slate-50">
+            <div className="divide-y divide-stone-100">
               {(user.testHistory || []).map((test, idx) => (
                 <div key={test.id || idx} className="group">
-                  <div className="w-full p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between hover:bg-slate-50/50 transition-all text-left">
+                  <div className="w-full p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between hover:bg-stone-50/50 transition-all text-left">
                     <div className="flex items-center gap-5 w-full md:w-auto">
-                      <div className="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 group-hover:scale-105 transition-transform shrink-0">
+                      <div className="w-12 h-12 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-800 group-hover:scale-105 transition-transform shrink-0 border border-emerald-100">
                         <BrainCircuit className="w-6 h-6" />
                       </div>
                       <div>
                         <h4 className="text-base font-black text-slate-800">{test.field}</h4>
-                        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-0.5">
+                        <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mt-0.5 font-mono">
                           {new Date(test.date).toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' })}
                         </p>
                       </div>
                     </div>
                     <div className="flex items-center gap-6 md:gap-8 mt-4 md:mt-0 w-full md:w-auto justify-between md:justify-end">
                       <div className="text-right hidden sm:block">
-                        <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Breakdown</p>
-                        <p className="text-xs font-black text-slate-600">S: {test.breakdown?.subjectCorrect}/{test.breakdown?.subjectTotal} • L: {test.breakdown?.logicalCorrect}/{test.breakdown?.logicalTotal}</p>
+                        <p className="text-[9px] font-black text-stone-400 uppercase tracking-widest mb-0.5 font-mono">Breakdown</p>
+                        <p className="text-xs font-black text-slate-600 font-mono">S: {test.breakdown?.subjectCorrect}/{test.breakdown?.subjectTotal} • L: {test.breakdown?.logicalCorrect}/{test.breakdown?.logicalTotal}</p>
                       </div>
                       <div className="text-right w-20">
-                        <p className="text-[9px] font-black text-emerald-500 uppercase tracking-widest mb-0.5">Accuracy</p>
-                        <p className="text-xl font-black text-emerald-600">{test.accuracy}%</p>
+                        <p className="text-[9px] font-black text-emerald-600 uppercase tracking-widest mb-0.5 font-mono">Accuracy</p>
+                        <p className="text-xl font-black text-emerald-700 font-mono">{test.accuracy}%</p>
                       </div>
                       <div className="flex gap-2">
                         <button 
                           onClick={() => setShowAnswerKeyId(showAnswerKeyId === test.id ? null : test.id)}
-                          className={`p-2.5 rounded-xl border transition-all ${showAnswerKeyId === test.id ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-slate-400 border-slate-200 hover:text-indigo-600'}`}
+                          className={`p-2.5 rounded-xl border transition-all ${showAnswerKeyId === test.id ? 'bg-emerald-800 text-white border-emerald-800' : 'bg-white text-stone-400 border-stone-200 hover:text-emerald-800 hover:border-emerald-300'}`}
                           title="View Answer Key"
                         >
                           <History className="w-4 h-4" />
                         </button>
                         <button 
                           onClick={() => setExpandedTestId(expandedTestId === test.id ? null : test.id)}
-                          className={`p-2.5 rounded-xl border transition-all ${expandedTestId === test.id ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-slate-400 border-slate-200 hover:text-indigo-600'}`}
+                          className={`p-2.5 rounded-xl border transition-all ${expandedTestId === test.id ? 'bg-emerald-800 text-white border-emerald-800' : 'bg-white text-stone-400 border-stone-200 hover:text-emerald-800 hover:border-emerald-300'}`}
                           title="Detailed Analysis"
                         >
                           <ChevronDown className={`w-4 h-4 transition-transform ${expandedTestId === test.id ? 'rotate-180' : ''}`} />
@@ -597,29 +597,29 @@ const Profile: React.FC<ProfileProps> = ({ user, setUser, updateProfile, strings
                   </div>
 
                   {showAnswerKeyId === test.id && (
-                    <div className="p-6 sm:p-8 bg-slate-50/60 border-t border-slate-100">
+                    <div className="p-6 sm:p-8 bg-stone-50/60 border-t border-stone-100">
                       {renderAnswerKey(test)}
                     </div>
                   )}
 
                   {expandedTestId === test.id && (
-                    <div className="p-6 sm:p-8 bg-indigo-50/30 border-t border-slate-100">
+                    <div className="p-6 sm:p-8 bg-emerald-50/20 border-t border-stone-100">
                       {test.analysis ? (
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                           <div className="space-y-6">
                             <div>
-                              <h5 className="text-[10px] font-black text-indigo-600 uppercase tracking-widest mb-3 flex items-center gap-1.5"><Shield className="w-3.5 h-3.5" /> AI Diagnostic Insights</h5>
+                              <h5 className="text-[10px] font-black text-emerald-800 uppercase tracking-widest mb-3 flex items-center gap-1.5 font-mono"><Shield className="w-3.5 h-3.5" /> AI Diagnostic Insights</h5>
                               <div className="grid grid-cols-2 gap-4">
-                                <div className="bg-white p-4 rounded-2xl border border-indigo-100">
-                                  <p className="text-[9px] font-black text-slate-400 uppercase mb-2">Strengths</p>
+                                <div className="bg-white p-4 rounded-2xl border border-emerald-100 shadow-xs">
+                                  <p className="text-[9px] font-black text-stone-400 uppercase mb-2 font-mono">Strengths</p>
                                   <ul className="space-y-1.5">
                                     {test.analysis.strengths.map((s, i) => (
-                                      <li key={i} className="text-xs font-bold text-slate-700 flex gap-2"><CheckCircle className="w-3.5 h-3.5 text-emerald-500 shrink-0" /> {s}</li>
+                                      <li key={i} className="text-xs font-bold text-slate-700 flex gap-2"><CheckCircle className="w-3.5 h-3.5 text-emerald-600 shrink-0" /> {s}</li>
                                     ))}
                                   </ul>
                                 </div>
-                                <div className="bg-white p-4 rounded-2xl border border-indigo-100">
-                                  <p className="text-[9px] font-black text-slate-400 uppercase mb-2">Weaknesses</p>
+                                <div className="bg-white p-4 rounded-2xl border border-emerald-100 shadow-xs">
+                                  <p className="text-[9px] font-black text-stone-400 uppercase mb-2 font-mono">Weaknesses</p>
                                   <ul className="space-y-1.5">
                                     {test.analysis.weaknesses.map((w, i) => (
                                       <li key={i} className="text-xs font-bold text-slate-700 flex gap-2"><XCircle className="w-3.5 h-3.5 text-rose-500 shrink-0" /> {w}</li>
@@ -628,22 +628,22 @@ const Profile: React.FC<ProfileProps> = ({ user, setUser, updateProfile, strings
                                 </div>
                               </div>
                             </div>
-                            <div className="bg-white p-5 rounded-2xl border border-indigo-100 shadow-sm">
-                              <p className="text-[9px] font-black text-indigo-600 uppercase mb-1.5">Career Suitability</p>
+                            <div className="bg-white p-5 rounded-2xl border border-emerald-100 shadow-xs">
+                              <p className="text-[9px] font-black text-emerald-800 uppercase mb-1.5 font-mono">Career Suitability</p>
                               <p className="text-xs font-bold text-slate-700 italic">"{test.analysis.careerFit}"</p>
                             </div>
                           </div>
 
                           <div className="space-y-4">
-                            <h5 className="text-[10px] font-black text-indigo-600 uppercase tracking-widest flex items-center gap-1.5"><BookOpen className="w-3.5 h-3.5" /> Recommended Free Resources</h5>
+                            <h5 className="text-[10px] font-black text-emerald-800 uppercase tracking-widest flex items-center gap-1.5 font-mono"><BookOpen className="w-3.5 h-3.5" /> Recommended Free Resources</h5>
                             <div className="space-y-3">
                               {(test.resources || []).map((res, i) => (
-                                <div key={i} className="bg-white p-4 rounded-2xl border border-indigo-100 flex justify-between items-center hover:border-indigo-400 transition-all">
+                                <div key={i} className="bg-white p-4 rounded-2xl border border-emerald-100 flex justify-between items-center hover:border-emerald-300 transition-all shadow-xs">
                                   <div>
                                     <p className="text-xs font-black text-slate-800">{res.name}</p>
-                                    <p className="text-[10px] text-slate-400 font-bold">{res.description}</p>
+                                    <p className="text-[10px] text-stone-400 font-bold">{res.description}</p>
                                   </div>
-                                  <a href={res.link} target="_blank" rel="noreferrer" className="p-2 rounded-xl bg-slate-50 text-slate-400 hover:bg-indigo-600 hover:text-white transition-all shrink-0">
+                                  <a href={res.link} target="_blank" rel="noreferrer" className="p-2 rounded-xl bg-stone-50 text-stone-400 hover:bg-emerald-800 hover:text-white transition-all shrink-0">
                                     <ExternalLink className="w-3.5 h-3.5" />
                                   </a>
                                 </div>
@@ -652,7 +652,7 @@ const Profile: React.FC<ProfileProps> = ({ user, setUser, updateProfile, strings
                           </div>
                         </div>
                       ) : (
-                        <p className="text-slate-400 font-bold text-xs text-center">No detailed analysis available for this session.</p>
+                        <p className="text-stone-400 font-bold text-xs text-center">No detailed analysis available for this session.</p>
                       )}
                     </div>
                   )}
@@ -668,7 +668,7 @@ const Profile: React.FC<ProfileProps> = ({ user, setUser, updateProfile, strings
 
 const ProfileField = ({ label, value, isEditing, onChange, type = "text", options }: any) => (
   <div className="space-y-1.5">
-    <label className="text-[10px] font-black text-slate-400 uppercase tracking-wider">
+    <label className="text-[10px] font-black text-stone-400 uppercase tracking-wider font-mono">
       {label}
     </label>
     {isEditing ? (
@@ -676,7 +676,7 @@ const ProfileField = ({ label, value, isEditing, onChange, type = "text", option
         <select 
           value={value} 
           onChange={(e) => onChange?.(e.target.value)} 
-          className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl bg-slate-50 font-bold text-xs focus:border-indigo-500 focus:bg-white outline-none transition-all cursor-pointer"
+          className="w-full px-4 py-3 border-2 border-stone-200 rounded-xl bg-stone-50 font-bold text-xs focus:border-emerald-600 focus:bg-white outline-none transition-all cursor-pointer"
         >
           <option value="">Select an option</option>
           {options.map((o: string) => <option key={o} value={o}>{o}</option>)}
@@ -686,12 +686,12 @@ const ProfileField = ({ label, value, isEditing, onChange, type = "text", option
           type={type} 
           value={value} 
           onChange={(e) => onChange?.(e.target.value)} 
-          className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl bg-slate-50 font-bold text-xs focus:border-indigo-500 focus:bg-white outline-none transition-all" 
+          className="w-full px-4 py-3 border-2 border-stone-200 rounded-xl bg-stone-50 font-bold text-xs focus:border-emerald-600 focus:bg-white outline-none transition-all" 
         />
       )
     ) : (
       <div className="py-2">
-        <p className="font-bold text-sm text-slate-800">{value || <span className="text-slate-300 font-normal italic">Not provided</span>}</p>
+        <p className="font-bold text-sm text-slate-800">{value || <span className="text-stone-300 font-normal italic">Not provided</span>}</p>
       </div>
     )}
   </div>

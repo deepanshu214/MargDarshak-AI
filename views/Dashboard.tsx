@@ -73,25 +73,25 @@ const Dashboard: React.FC<DashboardProps> = ({ user, updateProfile, strings }) =
     <div className="p-4 sm:p-8 max-w-7xl mx-auto pb-24 space-y-10 animate-in fade-in duration-500">
       
       {/* Hero Header */}
-      <div className="bg-gradient-to-r from-indigo-900 via-indigo-800 to-blue-900 rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden">
+      <div className="bg-gradient-to-br from-emerald-900 via-emerald-800 to-slate-900 rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden border border-emerald-950">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur-md rounded-full text-[11px] font-black uppercase tracking-wider text-amber-300 border border-white/10 mb-3">
-              <Sparkles className="w-3.5 h-3.5" /> Direct Financial Aid & Govt Scheme Discovery
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur-md rounded-full text-[11px] font-black uppercase tracking-wider text-amber-300 border border-white/10 mb-3 font-mono">
+              <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Direct Financial Aid & Govt Scheme Discovery
             </div>
-            <h1 className="text-3xl sm:text-4xl font-black tracking-tight">
+            <h1 className="text-3xl sm:text-4xl font-black tracking-tight font-serif">
               Verified Scholarships For You
             </h1>
-            <p className="text-indigo-200 text-xs sm:text-sm font-bold mt-1.5 max-w-xl">
+            <p className="text-emerald-100/80 text-xs sm:text-sm font-medium mt-1.5 max-w-xl leading-relaxed">
               Real-time matching across Central NSP, State Departments, and Tata & Reliance Corporate CSR programs.
             </p>
           </div>
 
           <div className="flex items-center gap-4 bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/10 shrink-0">
             <div>
-              <p className="text-[10px] font-black uppercase text-indigo-300 tracking-wider">Your Domicile & Category</p>
+              <p className="text-[10px] font-black uppercase text-amber-300 tracking-wider font-mono">Your Domicile & Category</p>
               <p className="text-sm font-black text-white">{user.locality || "All India"} • {user.caste || "General"}</p>
-              <p className="text-[11px] font-bold text-emerald-400 mt-0.5">
+              <p className="text-[11px] font-bold text-emerald-300 mt-0.5">
                 {rankedSchemes.filter(s => s.matchData.isEligible).length} Highly Eligible Schemes Found
               </p>
             </div>
@@ -103,16 +103,16 @@ const Dashboard: React.FC<DashboardProps> = ({ user, updateProfile, strings }) =
       <div className="flex flex-col md:flex-row items-center justify-between gap-4">
         {/* Search Input */}
         <div className="relative w-full md:w-96">
-          <Search className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-stone-400 absolute left-4 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             placeholder="Search by scholarship, state, or provider..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-11 pr-4 py-3 bg-white rounded-2xl border border-slate-200 font-bold text-xs focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 outline-none transition-all"
+            className="w-full pl-11 pr-4 py-3 bg-white/95 rounded-2xl border border-stone-200 font-bold text-xs focus:border-emerald-600 focus:ring-2 focus:ring-emerald-100 outline-none transition-all"
           />
           {searchQuery && (
-            <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+            <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600">
               <X className="w-3.5 h-3.5" />
             </button>
           )}
@@ -126,8 +126,8 @@ const Dashboard: React.FC<DashboardProps> = ({ user, updateProfile, strings }) =
               onClick={() => setFilter(tab)}
               className={`px-4 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider whitespace-nowrap transition-all ${
                 filter === tab 
-                  ? 'bg-indigo-600 text-white shadow-md' 
-                  : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200'
+                  ? 'bg-emerald-800 text-amber-300 border border-amber-400/40 shadow-sm' 
+                  : 'bg-white/90 text-stone-700 hover:bg-stone-50 border border-stone-200'
               }`}
             >
               {tab === 'Bookmarked' ? `★ Saved (${bookmarkedSet.size})` : tab}
@@ -148,17 +148,17 @@ const Dashboard: React.FC<DashboardProps> = ({ user, updateProfile, strings }) =
           return (
             <div 
               key={scheme.id}
-              className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm hover:shadow-xl transition-all flex flex-col justify-between group border-transparent hover:border-indigo-100"
+              className="bg-white rounded-3xl p-6 border border-stone-200/80 shadow-xs hover:shadow-xl transition-all flex flex-col justify-between group hover:border-emerald-300"
             >
               <div>
                 {/* Header Tags */}
                 <div className="flex items-center justify-between gap-2 mb-4">
                   <span className={`px-3 py-1 rounded-xl text-[10px] font-black uppercase tracking-wider ${
                     scheme.providerType === 'Central Govt' 
-                      ? 'bg-orange-50 text-orange-600 border border-orange-200' 
+                      ? 'bg-amber-50 text-amber-800 border border-amber-200' 
                       : scheme.providerType === 'State Govt'
-                      ? 'bg-emerald-50 text-emerald-600 border border-emerald-200'
-                      : 'bg-blue-50 text-blue-600 border border-blue-200'
+                      ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+                      : 'bg-stone-100 text-stone-700 border border-stone-200'
                   }`}>
                     {scheme.providerType}
                   </span>
@@ -166,16 +166,16 @@ const Dashboard: React.FC<DashboardProps> = ({ user, updateProfile, strings }) =
                   <div className="flex items-center gap-2">
                     <span className={`px-2.5 py-1 rounded-lg text-[10px] font-black ${
                       matchPercent >= 80 
-                        ? 'bg-emerald-50 text-emerald-700' 
+                        ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' 
                         : matchPercent >= 60 
-                        ? 'bg-indigo-50 text-indigo-700' 
-                        : 'bg-slate-100 text-slate-500'
+                        ? 'bg-amber-50 text-amber-800 border border-amber-200' 
+                        : 'bg-stone-100 text-stone-500'
                     }`}>
                       {matchPercent}% Match
                     </span>
                     <button 
                       onClick={() => toggleBookmark(scheme.id)}
-                      className="p-1.5 rounded-lg text-slate-400 hover:text-amber-500 hover:bg-slate-50 transition-colors"
+                      className="p-1.5 rounded-lg text-stone-400 hover:text-amber-500 hover:bg-stone-50 transition-colors"
                       title={isSaved ? "Remove Bookmark" : "Save Scheme"}
                     >
                       {isSaved ? <BookmarkCheck className="w-4 h-4 text-amber-500" /> : <Bookmark className="w-4 h-4" />}
@@ -185,41 +185,41 @@ const Dashboard: React.FC<DashboardProps> = ({ user, updateProfile, strings }) =
 
                 {/* Grant Amount Highlight */}
                 <div className="mb-3">
-                  <p className="text-xs font-black uppercase text-slate-400 tracking-wider">Financial Grant</p>
-                  <p className="text-lg font-black text-emerald-600 tracking-tight">{scheme.amountDisplay}</p>
+                  <p className="text-xs font-black uppercase text-stone-400 tracking-wider font-mono">Financial Grant</p>
+                  <p className="text-lg font-black text-emerald-700 tracking-tight">{scheme.amountDisplay}</p>
                 </div>
 
                 {/* Scheme Title */}
-                <h3 className="text-base font-black text-slate-800 tracking-tight line-clamp-2 group-hover:text-indigo-600 transition-colors mb-2">
+                <h3 className="text-base font-black text-slate-800 tracking-tight line-clamp-2 group-hover:text-emerald-800 transition-colors mb-2">
                   {title}
                 </h3>
-                <p className="text-xs font-bold text-slate-400 mb-4">{scheme.provider}</p>
+                <p className="text-xs font-bold text-stone-400 mb-4">{scheme.provider}</p>
 
                 {/* Eligibility Badges */}
-                <div className="space-y-1.5 mb-6 text-[11px] font-bold text-slate-600">
+                <div className="space-y-1.5 mb-6 text-[11px] font-bold text-stone-600">
                   <div className="flex items-center gap-2">
-                    <MapPin className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
+                    <MapPin className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
                     <span>Region: {scheme.state}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Wallet className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
+                    <Wallet className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
                     <span>Income Cap: Up to ₹{(scheme.incomeLimit / 100000).toFixed(1)} Lakhs</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Clock className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
+                    <Clock className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
                     <span>Deadline: {new Date(scheme.deadline).toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                   </div>
                 </div>
               </div>
 
               {/* Actions & Tracking Bottom */}
-              <div className="pt-4 border-t border-slate-100 space-y-3">
+              <div className="pt-4 border-t border-stone-100 space-y-3">
                 <div className="flex items-center justify-between text-[11px]">
-                  <span className="font-bold text-slate-400">Application Status:</span>
+                  <span className="font-bold text-stone-400 font-mono">Application Status:</span>
                   <select
                     value={currentStatus || 'Saved'}
                     onChange={(e) => updateApplicationStatus(scheme.id, title, e.target.value)}
-                    className="bg-slate-50 border border-slate-200 text-slate-700 font-bold px-2 py-1 rounded-lg text-xs outline-none cursor-pointer"
+                    className="bg-stone-50 border border-stone-200 text-stone-700 font-bold px-2 py-1 rounded-lg text-xs outline-none cursor-pointer focus:border-emerald-500"
                   >
                     <option value="Saved">📌 Saved</option>
                     <option value="Applied">📤 Applied</option>
@@ -231,7 +231,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, updateProfile, strings }) =
                 <div className="flex gap-2">
                   <button
                     onClick={() => setSelectedScheme(scheme)}
-                    className="flex-1 py-2.5 bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold rounded-xl text-xs transition-colors text-center"
+                    className="flex-1 py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold rounded-xl text-xs transition-colors text-center"
                   >
                     View Criteria
                   </button>
@@ -239,7 +239,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, updateProfile, strings }) =
                     href={scheme.applicationUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-black rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-md transition-all active:scale-95"
+                    className="flex-1 py-2.5 bg-emerald-800 hover:bg-emerald-900 text-amber-300 font-black rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-sm border border-amber-400/30 transition-all active:scale-95"
                   >
                     Apply Now <ArrowUpRight className="w-3.5 h-3.5" />
                   </a>
@@ -252,41 +252,41 @@ const Dashboard: React.FC<DashboardProps> = ({ user, updateProfile, strings }) =
 
       {/* Detailed Scheme Breakdown Modal */}
       {selectedScheme && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in">
-          <div className="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-slate-100 max-h-[90vh] overflow-y-auto space-y-6">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in">
+          <div className="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-stone-200 max-h-[90vh] overflow-y-auto space-y-6">
             <div className="flex justify-between items-start">
               <div>
-                <span className="text-[10px] font-black uppercase tracking-wider text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">
+                <span className="text-[10px] font-black uppercase tracking-wider text-emerald-800 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full font-mono">
                   {selectedScheme.providerType}
                 </span>
-                <h2 className="text-2xl font-black text-slate-800 mt-2">
+                <h2 className="text-2xl font-black text-slate-800 mt-2 font-serif">
                   {selectedScheme.title[lang] || selectedScheme.title['en']}
                 </h2>
-                <p className="text-xs font-bold text-slate-400 mt-0.5">{selectedScheme.provider}</p>
+                <p className="text-xs font-bold text-stone-400 mt-0.5">{selectedScheme.provider}</p>
               </div>
               <button 
                 onClick={() => setSelectedScheme(null)}
-                className="p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100"
+                className="p-2 rounded-xl text-stone-400 hover:text-stone-600 hover:bg-stone-100"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {/* Match Analysis */}
-            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 space-y-2">
+            <div className="p-4 rounded-2xl bg-stone-50 border border-stone-200 space-y-2">
               <div className="flex justify-between items-center">
                 <span className="text-xs font-black text-slate-700">Profile Match Evaluation</span>
-                <span className="text-sm font-black text-indigo-600">{selectedScheme.matchData.score}% Fit</span>
+                <span className="text-sm font-black text-emerald-800">{selectedScheme.matchData.score}% Fit</span>
               </div>
               <ul className="space-y-1 text-xs font-bold text-slate-600">
                 {selectedScheme.matchData.reasons.map((r: string, idx: number) => (
-                  <li key={idx} className="flex items-center gap-2 text-emerald-700">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" /> {r}
+                  <li key={idx} className="flex items-center gap-2 text-emerald-800">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" /> {r}
                   </li>
                 ))}
                 {selectedScheme.matchData.missingCriteria.map((m: string, idx: number) => (
-                  <li key={idx} className="flex items-center gap-2 text-amber-700">
-                    <AlertCircle className="w-3.5 h-3.5 text-amber-500 shrink-0" /> {m}
+                  <li key={idx} className="flex items-center gap-2 text-amber-800">
+                    <AlertCircle className="w-3.5 h-3.5 text-amber-600 shrink-0" /> {m}
                   </li>
                 ))}
               </ul>
@@ -294,21 +294,21 @@ const Dashboard: React.FC<DashboardProps> = ({ user, updateProfile, strings }) =
 
             {/* Required Documents Checklist */}
             <div>
-              <h4 className="text-xs font-black uppercase text-slate-400 tracking-wider mb-3">
+              <h4 className="text-xs font-black uppercase text-stone-400 tracking-wider mb-3 font-mono">
                 Required Verification Documents
               </h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {selectedScheme.requiredDocs.map((docId) => {
                   const isVerified = user.verifiedDocuments?.[docId]?.status === 'verified';
                   return (
-                    <div key={docId} className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100 text-xs font-bold text-slate-700">
+                    <div key={docId} className="flex items-center justify-between p-3 rounded-xl bg-stone-50 border border-stone-200 text-xs font-bold text-slate-700">
                       <span className="capitalize">{docId.replace('-', ' ')}</span>
                       {isVerified ? (
-                        <span className="text-emerald-600 flex items-center gap-1 font-black">
+                        <span className="text-emerald-700 flex items-center gap-1 font-black">
                           <Check className="w-3.5 h-3.5" /> Ready
                         </span>
                       ) : (
-                        <span className="text-amber-500 font-bold">Needs Upload</span>
+                        <span className="text-amber-600 font-bold">Needs Upload</span>
                       )}
                     </div>
                   );
@@ -317,10 +317,10 @@ const Dashboard: React.FC<DashboardProps> = ({ user, updateProfile, strings }) =
             </div>
 
             {/* Official Portal Apply Button */}
-            <div className="pt-4 border-t border-slate-100 flex gap-4">
+            <div className="pt-4 border-t border-stone-200 flex gap-4">
               <button
                 onClick={() => setSelectedScheme(null)}
-                className="flex-1 py-3.5 border border-slate-200 text-slate-700 font-bold rounded-xl text-xs hover:bg-slate-50"
+                className="flex-1 py-3.5 border border-stone-200 text-stone-700 font-bold rounded-xl text-xs hover:bg-stone-50"
               >
                 Close
               </button>
@@ -328,7 +328,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, updateProfile, strings }) =
                 href={selectedScheme.applicationUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="flex-1 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-black rounded-xl text-xs flex items-center justify-center gap-2 shadow-md"
+                className="flex-1 py-3.5 bg-emerald-800 hover:bg-emerald-900 text-amber-300 font-black rounded-xl text-xs flex items-center justify-center gap-2 shadow-md border border-amber-400/30"
               >
                 Go to Official Application Portal <ArrowUpRight className="w-4 h-4" />
               </a>
