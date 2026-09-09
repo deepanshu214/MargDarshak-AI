@@ -78,6 +78,9 @@ export interface VerifiedDocument {
 export interface UserProfile {
   name: string;
   email: string;
+  avatar?: string;
+  authProvider?: 'email' | 'google';
+  googleId?: string;
   password?: string;
   phone?: string;
   age?: number;

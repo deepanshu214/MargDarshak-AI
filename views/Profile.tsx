@@ -226,13 +226,34 @@ const Profile: React.FC<ProfileProps> = ({ user, setUser, updateProfile, strings
           <div className="px-8 pb-8 -mt-16 relative z-10">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
               <div className="flex flex-col sm:flex-row items-center sm:items-end gap-6 text-center sm:text-left">
-                <div className="w-32 h-32 rounded-3xl bg-white p-2.5 shadow-2xl ring-8 ring-amber-100/50 shrink-0 border border-stone-200">
-                  <div className="w-full h-full bg-gradient-to-br from-emerald-100 to-amber-50 rounded-2xl flex items-center justify-center text-emerald-800">
-                    <User className="w-16 h-16" />
-                  </div>
+                <div className="w-32 h-32 rounded-3xl bg-white p-2.5 shadow-2xl ring-8 ring-amber-100/50 shrink-0 border border-stone-200 relative">
+                  {user.avatar ? (
+                    <img 
+                      src={user.avatar} 
+                      alt={user.name} 
+                      className="w-full h-full object-cover rounded-2xl"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-emerald-100 to-amber-50 rounded-2xl flex items-center justify-center text-emerald-800">
+                      <User className="w-16 h-16" />
+                    </div>
+                  )}
+                  {user.authProvider === 'google' && (
+                    <div className="absolute -bottom-2 -right-2 bg-white px-2 py-0.5 rounded-full shadow-md border border-stone-200 flex items-center gap-1 text-[9px] font-black text-emerald-900" title="Google Authenticated Scholar">
+                      <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                      Google
+                    </div>
+                  )}
                 </div>
                 <div>
-                  <h2 className="text-3xl font-black text-slate-800 tracking-tight font-serif">{user.name}</h2>
+                  <div className="flex items-center gap-2 justify-center sm:justify-start">
+                    <h2 className="text-3xl font-black text-slate-800 tracking-tight font-serif">{user.name}</h2>
+                    {user.authProvider === 'google' && (
+                      <span className="bg-emerald-100 text-emerald-900 text-[10px] font-black uppercase px-2 py-0.5 rounded-full font-mono border border-emerald-300">
+                        2FA Verified
+                      </span>
+                    )}
+                  </div>
                   <p className="text-stone-400 font-bold text-xs uppercase tracking-widest mt-1 font-mono">
                     {user.educationLevel || 'Student'} • {user.fieldOfStudy || 'General'}
                   </p>

@@ -353,9 +353,20 @@ const App: React.FC = () => {
                         <span className="text-xs font-black text-slate-800 leading-none mb-1">{user.name.split(' ')[0]}</span>
                         <span className="text-[9px] font-bold text-amber-600 uppercase tracking-widest">{user.points} XP</span>
                       </div>
-                      <div className="w-8 h-8 bg-emerald-100 rounded-xl border border-emerald-200 flex items-center justify-center text-emerald-800">
-                        <User className="w-4 h-4" />
-                      </div>
+                      {user.avatar ? (
+                        <div className="relative">
+                          <img src={user.avatar} alt={user.name} className="w-8 h-8 rounded-xl object-cover border border-emerald-300 ring-2 ring-emerald-50" />
+                          {user.authProvider === 'google' && (
+                            <span className="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-white rounded-full flex items-center justify-center shadow-xs border border-stone-200" title="Google Verified">
+                              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                            </span>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="w-8 h-8 bg-emerald-100 rounded-xl border border-emerald-200 flex items-center justify-center text-emerald-800">
+                          <User className="w-4 h-4" />
+                        </div>
+                      )}
                       <ChevronDown className={`w-3.5 h-3.5 text-stone-400 transition-transform ${isProfileMenuOpen ? 'rotate-180' : ''}`} />
                     </button>
                     {isProfileMenuOpen && (
