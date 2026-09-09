@@ -1,21 +1,29 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-// Added Wallet to the imports list
-import { Search, ArrowRight, ShieldCheck, GraduationCap, MapPin, Sparkles, Trophy, Medal, Star, Target, Zap, Users, Loader2, Info, BookOpen, Heart, Wallet } from 'lucide-react';
+import { 
+  Search, ArrowRight, ShieldCheck, GraduationCap, MapPin, Sparkles, 
+  Trophy, Medal, Star, Target, Zap, Users, Loader2, Info, BookOpen, 
+  Heart, Wallet, Flame, ArrowUpRight, CheckCircle2, Bookmark
+} from 'lucide-react';
 import { UserProfile } from '../types';
 import { getSmartRecommendations } from '../services/geminiService';
+import { InteractiveStudyTools } from '../components/InteractiveStudyTools';
 
-const Home: React.FC<{ user: UserProfile; strings: Record<string, string> }> = ({ user, strings }) => {
+interface HomeProps {
+  user: UserProfile;
+  updateProfile?: (u: Partial<UserProfile>) => void;
+  strings: Record<string, string>;
+}
+
+const Home: React.FC<HomeProps> = ({ user, updateProfile = () => {}, strings }) => {
   const [recommendations, setRecommendations] = useState<any[]>([]);
   const [loadingRecs, setLoadingRecs] = useState(false);
 
-  const currentLevel = Math.floor(user.points / 200) + 1;
-  const progress = (user.points % 200) / 200 * 100;
+  const currentLevel = Math.floor((user.points || 0) / 200) + 1;
+  const progress = ((user.points || 0) % 200) / 200 * 100;
 
   useEffect(() => {
     const fetchRecs = async () => {
-      // Only fetch if profile has some data to suggest things from
       if (user.locality || user.income || user.caste) {
         setLoadingRecs(true);
         const recs = await getSmartRecommendations(user);
@@ -27,160 +35,179 @@ const Home: React.FC<{ user: UserProfile; strings: Record<string, string> }> = (
   }, [user.locality, user.income, user.caste, user.interest, user.language]);
 
   return (
-    <div className="p-4 md:p-8 max-w-6xl mx-auto space-y-10 pb-20">
-      {/* Animated Hero Header */}
-      <div className="flex flex-col lg:flex-row gap-8 items-stretch">
-        <section className="flex-[2] relative bg-gradient-to-br from-indigo-700 via-indigo-800 to-blue-900 rounded-[3rem] p-10 md:p-14 text-white overflow-hidden shadow-2xl shadow-indigo-200 group">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full -mr-32 -mt-32 blur-3xl group-hover:scale-125 transition-transform duration-1000"></div>
-          <div className="relative z-10 flex flex-col h-full justify-center">
-            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 text-xs font-black tracking-widest uppercase mb-6 w-fit">
-              <Zap className="w-4 h-4 text-yellow-300" /> {strings.learning || 'Learning'}
+    <div className="p-4 sm:p-8 max-w-7xl mx-auto space-y-10 pb-24 animate-in fade-in duration-500">
+      
+      {/* ACADEMIC STUDY HERO HEADER */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        
+        {/* Main Scholar Welcome Card (8 cols) */}
+        <section className="lg:col-span-8 relative bg-gradient-to-br from-emerald-900 via-emerald-800 to-slate-900 rounded-3xl p-8 sm:p-12 text-white overflow-hidden shadow-xl border border-emerald-950 flex flex-col justify-between">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 rounded-full -mr-24 -mt-24 blur-3xl"></div>
+          
+          <div className="relative z-10">
+            <div className="flex flex-wrap items-center gap-2 mb-4">
+              <span className="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-md px-3.5 py-1 rounded-full text-[11px] font-black uppercase tracking-wider text-amber-300 border border-white/10">
+                <Flame className="w-3.5 h-3.5 fill-amber-400 text-amber-400" /> Active Scholar Streak • 5 Days
+              </span>
+              <span className="bg-emerald-500/20 text-emerald-200 px-3 py-1 rounded-full text-[11px] font-bold border border-emerald-400/20">
+                Level {currentLevel} Aspirant
+              </span>
             </div>
-            <h1 className="text-4xl md:text-6xl font-black mb-6 leading-tight tracking-tighter">
-              {strings.welcome || 'Welcome'}, <br /> {user.name}! 🚀
+
+            <h1 className="text-3xl sm:text-5xl font-black mb-4 leading-tight tracking-tight">
+              Welcome to Your Study Lounge, <br />
+              <span className="text-amber-300">{user.name}</span> 📚
             </h1>
-            <p className="text-indigo-100 text-lg mb-10 max-w-lg font-medium leading-relaxed opacity-90">
-              Your personalized guide to India's top scholarships and career roadmaps. Let's make your dreams accessible.
+
+            <p className="text-emerald-100/80 text-xs sm:text-sm mb-8 max-w-xl font-medium leading-relaxed">
+              Your personalized academic & scholarship command center. Discover verified government financial aid, practice timed talent evaluations, and receive multilingual mentorship.
             </p>
-            <div className="flex flex-wrap gap-4">
-              <Link to="/test" className="px-8 py-4 bg-white text-indigo-700 font-black rounded-2xl flex items-center gap-3 hover:bg-indigo-50 transition-all shadow-xl shadow-indigo-900/20 hover:-translate-y-1">
-                {strings.startTest || 'Take Mock Test'} <Target className="w-5 h-5" />
+
+            <div className="flex flex-wrap gap-3">
+              <Link 
+                to="/test" 
+                className="px-6 py-3.5 bg-amber-400 hover:bg-amber-300 text-slate-900 font-black rounded-2xl flex items-center gap-2 text-xs uppercase tracking-wider shadow-lg transition-all active:scale-95"
+              >
+                <Target className="w-4 h-4" /> Start Practice Assessment
               </Link>
-              <Link to="/chatbot" className="px-8 py-4 bg-indigo-500/30 border border-white/20 text-white font-black rounded-2xl flex items-center gap-3 hover:bg-indigo-500/40 transition-all backdrop-blur-md">
-                {strings.aiMentor || 'Talk to AI Mentor'} <Sparkles className="w-5 h-5" />
+              <Link 
+                to="/schemes" 
+                className="px-6 py-3.5 bg-white/10 hover:bg-white/20 text-white font-black rounded-2xl flex items-center gap-2 text-xs uppercase tracking-wider border border-white/20 backdrop-blur-sm transition-all"
+              >
+                <Wallet className="w-4 h-4 text-emerald-300" /> Discover Scholarships
               </Link>
             </div>
+          </div>
+
+          <div className="relative z-10 pt-8 mt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-4 text-xs text-emerald-200/90 font-bold">
+            <span className="flex items-center gap-1.5">
+              <MapPin className="w-3.5 h-3.5 text-amber-400" /> {user.locality || 'India'} • {user.educationLevel || 'School/College'}
+            </span>
+            <span className="flex items-center gap-1.5">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> MargDarshak Trust Index: {user.trustScore || 80}%
+            </span>
           </div>
         </section>
 
-        <div className="lg:w-96 bg-white rounded-[3rem] p-8 shadow-sm border border-slate-100 flex flex-col justify-between relative overflow-hidden group">
-          <div className="absolute top-0 right-0 p-8 opacity-5">
-            <Trophy className="w-24 h-24" />
-          </div>
-          <div className="relative z-10">
-            <div className="flex justify-between items-center mb-6">
-              <span className="text-slate-400 font-black text-[10px] uppercase tracking-[0.2em]">{strings.rank || 'Rank'} #? • {strings.level || 'Level'} {currentLevel}</span>
-              <div className="bg-indigo-50 px-3 py-1 rounded-full text-indigo-600 text-xs font-black">Student</div>
+        {/* Scholar XP & Progress Podium Card (4 cols) */}
+        <div className="lg:col-span-4 bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200/80 flex flex-col justify-between relative overflow-hidden">
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-xs font-black uppercase tracking-wider text-slate-400">Academic Standing</span>
+              <Trophy className="w-5 h-5 text-amber-500" />
             </div>
-            <div className="space-y-2 mb-8">
-              <div className="h-4 w-full bg-slate-100 rounded-full overflow-hidden">
-                <div className="h-full bg-indigo-600 rounded-full transition-all duration-1000" style={{ width: `${progress}%` }}></div>
+
+            <div className="text-center py-4">
+              <div className="w-20 h-20 bg-gradient-to-tr from-amber-400 to-yellow-300 rounded-3xl mx-auto flex items-center justify-center font-black text-2xl text-slate-900 shadow-md ring-4 ring-amber-50 mb-3">
+                👑
               </div>
-              <div className="flex justify-between text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                <span>{user.points} {strings.points || 'XP'}</span>
-                <span>{currentLevel * 200} {strings.points || 'XP'}</span>
+              <h3 className="text-2xl font-black text-slate-800">{user.points || 0} XP</h3>
+              <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-0.5">
+                Scholar Level {currentLevel}
+              </p>
+            </div>
+
+            {/* Level Progress */}
+            <div className="space-y-2 mt-4">
+              <div className="flex justify-between text-xs font-bold text-slate-500">
+                <span>Progress to Level {currentLevel + 1}</span>
+                <span className="text-emerald-700 font-black">{Math.round(progress)}%</span>
+              </div>
+              <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                <div 
+                  className="bg-emerald-600 h-full rounded-full transition-all duration-700"
+                  style={{ width: `${progress}%` }}
+                ></div>
               </div>
             </div>
           </div>
-          
-          <div className="grid grid-cols-2 gap-4 relative z-10">
-            <div className="p-4 bg-amber-50 rounded-[2rem] border border-amber-100 text-center hover:scale-105 transition-transform">
-              <Trophy className="w-6 h-6 text-amber-600 mx-auto mb-2" />
-              <p className="text-[10px] font-black text-amber-800 uppercase tracking-widest">XP</p>
-              <p className="text-2xl font-black text-amber-900 leading-none">{user.points}</p>
-            </div>
-            <div className="p-4 bg-purple-50 rounded-[2rem] border border-purple-100 text-center hover:scale-105 transition-transform">
-              <Medal className="w-6 h-6 text-purple-600 mx-auto mb-2" />
-              <p className="text-[10px] font-black text-purple-800 uppercase tracking-widest">{strings.badges || 'Badges'}</p>
-              <p className="text-2xl font-black text-purple-900 leading-none">{user.badges.length}</p>
-            </div>
+
+          <div className="pt-6 border-t border-slate-100 mt-6 flex gap-3">
+            <Link 
+              to="/leaderboard" 
+              className="flex-1 py-3 bg-slate-50 hover:bg-slate-100 text-slate-700 font-black rounded-xl text-xs text-center transition-colors flex items-center justify-center gap-1.5"
+            >
+              <Medal className="w-3.5 h-3.5 text-amber-500" /> Leaderboard
+            </Link>
+            <Link 
+              to="/profile" 
+              className="flex-1 py-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-black rounded-xl text-xs text-center transition-colors flex items-center justify-center gap-1.5"
+            >
+              <ShieldCheck className="w-3.5 h-3.5" /> Trust Vault
+            </Link>
           </div>
         </div>
       </div>
 
-      {/* AI Smart Suggestions Section (Bridge between DB and Suggestions) */}
-      <section className="bg-white rounded-[3.5rem] p-10 shadow-sm border border-slate-100 overflow-hidden relative">
-         <div className="absolute top-0 right-0 -mt-10 -mr-10 opacity-[0.03]">
-            <Sparkles className="w-64 h-64" />
-         </div>
-         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10 relative z-10">
-            <div>
-               <h3 className="text-sm font-black text-slate-400 uppercase tracking-[0.2em] mb-2 flex items-center gap-2">
-                 <Sparkles className="w-4 h-4 text-indigo-600" /> AI Suggestions for You
-               </h3>
-               <p className="text-2xl font-black text-slate-800 tracking-tight">Personalized Roadmap based on your Database</p>
-            </div>
-            {(!user.locality || !user.income || !user.caste) && (
-              <Link to="/profile" className="px-6 py-3 bg-amber-50 text-amber-700 border border-amber-100 rounded-xl text-xs font-black uppercase tracking-widest flex items-center gap-2">
-                <Info className="w-4 h-4" /> Complete Profile to get Suggestions
-              </Link>
-            )}
-         </div>
+      {/* INTERACTIVE STUDY COMPANION TOOLS (Focus Timer, Quests, Flashcard, Aid Estimator, Notes) */}
+      <div>
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h2 className="text-xl font-black text-slate-800 flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-amber-500" /> Interactive Scholar Tools
+            </h2>
+            <p className="text-xs font-bold text-slate-400">Pomodoro focus sprint, daily quests, flashcards & instant scholarship calculations</p>
+          </div>
+        </div>
 
-         {loadingRecs ? (
-           <div className="py-20 flex flex-col items-center justify-center opacity-40">
-              <Loader2 className="w-10 h-10 animate-spin mb-4" />
-              <p className="font-black text-xs uppercase tracking-widest">Analyzing your data...</p>
-           </div>
-         ) : recommendations.length > 0 ? (
-           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
-              {recommendations.map((rec, i) => (
-                <div key={i} className="bg-slate-50 p-8 rounded-[2.5rem] border border-slate-100 group hover:bg-white hover:border-indigo-200 transition-all hover:shadow-xl">
-                   <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-6 shadow-sm ${rec.type === 'career' ? 'bg-purple-100 text-purple-600' : 'bg-emerald-100 text-emerald-600'}`}>
-                      {rec.type === 'career' ? <Target className="w-6 h-6" /> : <Wallet className="w-6 h-6" />}
-                   </div>
-                   <h4 className="text-xl font-black text-slate-800 mb-3">{rec.title}</h4>
-                   <p className="text-sm text-slate-500 font-medium leading-relaxed mb-6">{rec.description}</p>
-                   <Link to={rec.type === 'career' ? "/test" : "/schemes"} className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-indigo-600 group-hover:gap-3 transition-all">
-                      View details <ArrowRight className="w-3 h-3" />
-                   </Link>
+        <InteractiveStudyTools user={user} updateProfile={updateProfile} />
+      </div>
+
+      {/* SMART AI SCHOLARSHIP RECOMMENDATIONS CAROUSEL */}
+      {(user.locality || user.income || user.caste) && (
+        <section className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center">
+                <Sparkles className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="text-lg font-black text-slate-800">Recommended Next Steps & Schemes</h3>
+                <p className="text-xs font-bold text-slate-400">Curated specifically for your academic and economic criteria</p>
+              </div>
+            </div>
+            <Link to="/schemes" className="text-xs font-black text-emerald-700 hover:text-emerald-800 flex items-center gap-1">
+              View All Schemes →
+            </Link>
+          </div>
+
+          {loadingRecs ? (
+            <div className="py-12 flex flex-col items-center justify-center text-slate-400 space-y-2">
+              <Loader2 className="w-6 h-6 animate-spin text-emerald-600" />
+              <p className="text-xs font-bold">Personalizing scholarship matches...</p>
+            </div>
+          ) : recommendations.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {recommendations.slice(0, 3).map((rec, i) => (
+                <div key={i} className="p-5 rounded-2xl border border-slate-100 bg-slate-50/60 flex flex-col justify-between hover:border-emerald-200 hover:bg-emerald-50/20 transition-all">
+                  <div>
+                    <span className={`px-2.5 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider ${
+                      rec.type === 'scheme' ? 'bg-emerald-100 text-emerald-800' : 'bg-blue-100 text-blue-800'
+                    }`}>
+                      {rec.type === 'scheme' ? 'Verified Scheme' : 'Academic Action'}
+                    </span>
+                    <h4 className="text-sm font-black text-slate-800 mt-2.5 line-clamp-2">{rec.title}</h4>
+                    <p className="text-xs text-slate-500 font-medium mt-1 leading-relaxed line-clamp-3">{rec.description}</p>
+                  </div>
+                  <div className="mt-4 pt-3 border-t border-slate-200/60">
+                    <Link 
+                      to={rec.type === 'scheme' ? "/schemes" : "/test"} 
+                      className="text-xs font-black text-emerald-700 hover:text-emerald-800 flex items-center gap-1"
+                    >
+                      Take Action <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+                  </div>
                 </div>
               ))}
-           </div>
-         ) : (
-           <div className="py-20 text-center border-2 border-dashed border-slate-100 rounded-[3rem]">
-              <BookOpen className="w-12 h-12 mx-auto mb-4 text-slate-200" />
-              <p className="text-slate-400 font-black text-xs uppercase tracking-widest">No suggestions yet. Update your profile details.</p>
-           </div>
-         )}
-      </section>
-
-      {/* Quick Action Tiles */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <Tile 
-          icon={<ShieldCheck className="w-10 h-10" />} 
-          title={strings.verifiedSchemes || "Verified Schemes"} 
-          desc="Discover 500+ subsidies and grants from Govt & Private entities." 
-          link="/schemes"
-          color="green"
-        />
-        <Tile 
-          icon={<GraduationCap className="w-10 h-10" />} 
-          title={strings.talentSearch || "Talent Search"} 
-          desc="Adaptive mock tests to find your academic strengths and careers." 
-          link="/test"
-          color="orange"
-        />
-        <Tile 
-          icon={<Users className="w-10 h-10" />} 
-          title={strings.peerNetwork || "Peer Network"} 
-          desc="Connect with mentors and students from similar localities." 
-          link="/leaderboard"
-          color="blue"
-        />
-      </div>
+            </div>
+          ) : (
+            <div className="p-8 text-center bg-slate-50 rounded-2xl text-slate-400 text-xs font-bold">
+              Update your income, caste, and state in <Link to="/profile" className="text-emerald-600 underline">Profile</Link> to unlock AI tailored schemes.
+            </div>
+          )}
+        </section>
+      )}
     </div>
-  );
-};
-
-const Tile = ({ icon, title, desc, link, color }: any) => {
-  const colors: any = {
-    green: "bg-emerald-50 text-emerald-600 border-emerald-100 hover:bg-emerald-100",
-    orange: "bg-orange-50 text-orange-600 border-orange-100 hover:bg-orange-100",
-    blue: "bg-blue-50 text-blue-600 border-blue-100 hover:bg-blue-100"
-  };
-
-  return (
-    <Link to={link} className={`p-10 rounded-[2.5rem] border-2 transition-all group shadow-sm flex flex-col h-full ${colors[color]}`}>
-      <div className="bg-white w-16 h-16 rounded-2xl flex items-center justify-center mb-8 shadow-sm group-hover:scale-110 transition-transform">
-        {icon}
-      </div>
-      <h3 className="text-2xl font-black text-slate-800 mb-4">{title}</h3>
-      <p className="text-slate-500 font-medium leading-relaxed mb-8 flex-1">{desc}</p>
-      <div className="flex items-center gap-2 font-black text-xs uppercase tracking-widest text-slate-400 group-hover:text-slate-800 transition-colors">
-        Learn More <ArrowRight className="w-4 h-4" />
-      </div>
-    </Link>
   );
 };
 

@@ -287,7 +287,7 @@ const Profile: React.FC<ProfileProps> = ({ user, setUser, updateProfile, strings
               </div>
               <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 text-xs font-bold text-slate-700">
                 <span className="flex items-center gap-2"><FileCheck className="w-3.5 h-3.5 text-indigo-500" /> AI Document Verification</span>
-                {Object.values(user.verifiedDocuments || {}).some(d => d.status === 'verified') ? (
+                {(Object.values(user.verifiedDocuments || {}) as any[]).some(d => d.status === 'verified') ? (
                   <Check className="w-4 h-4 text-emerald-500" />
                 ) : (
                   <span className="text-amber-500 text-[10px]">Upload Docs</span>

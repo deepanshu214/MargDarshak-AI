@@ -182,7 +182,7 @@ const MockTest: React.FC<MockTestProps> = ({ user, updateProfile, strings }) => 
     storageService.remove(ACTIVE_TEST_STORAGE_KEY).catch(() => {});
     setStep('results');
 
-    const results = Object.values(attempts);
+    const results = Object.values(attempts) as TestAttempt[];
     const correctCount = results.filter(a => a.isCorrect).length;
     const accuracy = Math.round((correctCount / (sessionQuestions.length || 1)) * 100);
     const earnedPoints = correctCount * 10 + 50;
