@@ -7,10 +7,11 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "tsx tests/stage1_load_test.mjs && tsx tests/stage2_load_test.mjs && tsx tests/stage3_load_test.mjs",
+    "test": "tsx tests/stage1_load_test.mjs && tsx tests/stage2_load_test.mjs && tsx tests/stage3_load_test.mjs && tsx tests/stage4_load_test.mjs",
     "test:stage1": "tsx tests/stage1_load_test.mjs",
     "test:stage2": "tsx tests/stage2_load_test.mjs",
-    "test:stage3": "tsx tests/stage3_load_test.mjs"
+    "test:stage3": "tsx tests/stage3_load_test.mjs",
+    "test:stage4": "tsx tests/stage4_load_test.mjs"
   },
   "dependencies": {
     "@google/genai": "^1.40.0",

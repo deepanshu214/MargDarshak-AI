@@ -1,33 +1,28 @@
-
-import React, { useState, useRef, useEffect } from 'react';
-import { Filter, ExternalLink, CheckCircle2, ChevronDown, X, FileText, ShieldCheck, Banknote, MapPin, GraduationCap, UserCheck, Upload, Loader2, Trash2, Check, Sparkles, Star, ArrowUpRight, Wallet, Info } from 'lucide-react';
-import { SAMPLE_SCHEMES } from '../constants';
+import React, { useState, useEffect } from 'react';
+import { 
+  Filter, ExternalLink, CheckCircle2, ChevronDown, X, FileText, 
+  ShieldCheck, Banknote, MapPin, GraduationCap, UserCheck, Upload, 
+  Loader2, Check, Sparkles, Star, ArrowUpRight, Wallet, Info, 
+  Search, Bookmark, BookmarkCheck, Calendar, Clock, AlertCircle, 
+  Award, Eye, Share2
+} from 'lucide-react';
 import { UserProfile, VerifiedDocument } from '../types';
+import { scholarshipService, SchemeDefinition, COMPREHENSIVE_SCHEMES } from '../services/scholarshipService';
 import { getSmartRecommendations } from '../services/geminiService';
 
-const Camera = ({ className }: { className?: string }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>;
+interface DashboardProps {
+  user: UserProfile;
+  updateProfile: (u: Partial<UserProfile>) => void;
+  strings: Record<string, string>;
+}
 
-const DOCUMENT_DEFINITIONS = [
-  { id: 'aadhaar', label: 'Aadhaar Card', icon: <UserCheck className="w-5 h-5" />, desc: 'Primary identity & address proof' },
-  { id: 'income', label: 'Income Certificate', icon: <Banknote className="w-5 h-5" />, desc: 'Valid certificate (less than 1 year old)' },
-  { id: 'caste', label: 'Caste Certificate', icon: <ShieldCheck className="w-5 h-5" />, desc: 'Required for SC/ST/OBC category benefits' },
-  { id: 'domicile', label: 'Domicile Certificate', icon: <MapPin className="w-5 h-5" />, desc: 'Proof of residence for state schemes' },
-  { id: 'marksheet', label: 'Latest Marksheet', icon: <GraduationCap className="w-5 h-5" />, desc: 'Previous academic year record' },
-  { id: 'passbook', label: 'Bank Passbook', icon: <FileText className="w-5 h-5" />, desc: 'Required for DBT (scholarship transfer)' },
-  { id: 'photo', label: 'Passport Photos', icon: <Camera className="w-5 h-5" />, desc: 'Scanned digital copy (below 50KB)' },
-];
-
-const Dashboard: React.FC<{ user: UserProfile, updateProfile: (u: Partial<UserProfile>) => void, strings: Record<string, string> }> = ({ user, updateProfile, strings }) => {
-  const [filter, setFilter] = useState('All');
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [isChecklistOpen, setIsChecklistOpen] = useState(false);
-  const [activeDocId, setActiveDocId] = useState<string | null>(null);
-  const [isVerifying, setIsVerifying] = useState(false);
+const Dashboard: React.FC<DashboardProps> = ({ user, updateProfile, strings }) => {
+  const [filter, setFilter] = useState<'All' | 'Central Govt' | 'State Govt' | 'Corporate CSR' | 'Bookmarked'>('All');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedScheme, setSelectedScheme] = useState<(SchemeDefinition & { matchData: any }) | null>(null);
   const [aiSchemes, setAiSchemes] = useState<any[]>([]);
   const [loadingAi, setLoadingAi] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const filterRef = useRef<HTMLDivElement>(null);
-  
+
   const lang = user.language || 'en';
 
   useEffect(() => {
@@ -42,330 +37,305 @@ const Dashboard: React.FC<{ user: UserProfile, updateProfile: (u: Partial<UserPr
     fetchPersonalized();
   }, [user.locality, user.income, user.caste, user.interest]);
 
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (filterRef.current && !filterRef.current.contains(e.target as Node)) {
-        setIsFilterOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  const verifiedDocs = user.verifiedDocuments || {};
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file || !activeDocId) return;
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const dataUrl = reader.result as string;
-      const newDoc: VerifiedDocument = {
-        dataUrl,
-        status: 'pending',
-        uploadedAt: new Date().toISOString(),
-      };
-      
-      const updatedVerifiedDocs = { ...verifiedDocs, [activeDocId]: newDoc };
-      updateProfile({ verifiedDocuments: updatedVerifiedDocs });
-      
-      setIsVerifying(true);
-      setTimeout(() => {
-        const verifiedDoc = { ...newDoc, status: 'verified' as const };
-        updateProfile({ 
-          verifiedDocuments: { ...updatedVerifiedDocs, [activeDocId]: verifiedDoc },
-          points: user.points + 20 
-        });
-        setIsVerifying(false);
-      }, 3000);
-    };
-    reader.readAsDataURL(file);
+  const toggleBookmark = (schemeId: string) => {
+    const currentBookmarks = new Set(user.bookmarkedSchemes || []);
+    if (currentBookmarks.has(schemeId)) {
+      currentBookmarks.delete(schemeId);
+    } else {
+      currentBookmarks.add(schemeId);
+    }
+    updateProfile({ bookmarkedSchemes: Array.from(currentBookmarks) });
   };
 
-  const removeDocument = (id: string) => {
-    const updatedVerifiedDocs = { ...verifiedDocs };
-    delete updatedVerifiedDocs[id];
-    updateProfile({ verifiedDocuments: updatedVerifiedDocs });
+  const updateApplicationStatus = (schemeId: string, schemeName: string, status: any) => {
+    const currentApplied = [...(user.appliedSchemes || [])];
+    const existingIdx = currentApplied.findIndex(a => a.schemeId === schemeId);
+
+    if (existingIdx >= 0) {
+      currentApplied[existingIdx].status = status;
+    } else {
+      currentApplied.push({
+        schemeId,
+        schemeName,
+        appliedDate: new Date().toISOString(),
+        status
+      });
+    }
+
+    updateProfile({ appliedSchemes: currentApplied });
   };
 
-  const filteredSchemes = filter === 'All' 
-    ? SAMPLE_SCHEMES 
-    : SAMPLE_SCHEMES.filter(s => s.provider === filter);
-
-  const activeDoc = DOCUMENT_DEFINITIONS.find(d => d.id === activeDocId);
-  const activeVerifiedData = activeDocId ? verifiedDocs[activeDocId] : null;
+  const rankedSchemes = scholarshipService.getRankedSchemes(user, filter, searchQuery);
+  const bookmarkedSet = new Set(user.bookmarkedSchemes || []);
+  const appliedMap = new Map((user.appliedSchemes || []).map(a => [a.schemeId, a.status]));
 
   return (
-    <div className="p-6 md:p-10 max-w-7xl mx-auto pb-24 animate-in fade-in duration-700">
+    <div className="p-4 sm:p-8 max-w-7xl mx-auto pb-24 space-y-10 animate-in fade-in duration-500">
       
-      {/* Identity Vault Modal */}
-      {isChecklistOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xl animate-in fade-in duration-300">
-           <div className="bg-white w-full max-w-4xl rounded-[3.5rem] shadow-2xl overflow-hidden flex flex-col h-[85vh]">
-              <div className="p-10 bg-indigo-600 text-white flex justify-between items-center shrink-0">
-                <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center shadow-inner">
-                    <ShieldCheck className="w-7 h-7" />
-                  </div>
-                  <div>
-                    <h3 className="text-3xl font-black tracking-tighter">Identity Vault</h3>
-                    <p className="text-indigo-100 font-bold text-xs uppercase tracking-widest opacity-80 mt-1">Zero-Knowledge Verification</p>
-                  </div>
-                </div>
-                <button onClick={() => { setIsChecklistOpen(false); setActiveDocId(null); }} className="p-4 bg-white/10 hover:bg-white/20 rounded-2xl transition-all border border-white/10">
-                  <X className="w-6 h-6" />
-                </button>
-              </div>
-
-              <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
-                <div className="w-full md:w-80 border-r border-slate-100 overflow-y-auto p-6 bg-slate-50/50">
-                  {DOCUMENT_DEFINITIONS.map((doc) => {
-                    const status = verifiedDocs[doc.id]?.status;
-                    const isActive = activeDocId === doc.id;
-                    return (
-                      <button key={doc.id} onClick={() => setActiveDocId(doc.id)} className={`w-full flex items-center justify-between p-4 rounded-2xl border-2 transition-all text-left mb-2 ${isActive ? 'bg-white border-indigo-600 shadow-xl' : 'bg-transparent border-transparent hover:bg-white/80'}`}>
-                         <div className="flex items-center gap-3">
-                            <div className={`p-2.5 rounded-xl ${status === 'verified' ? 'bg-green-100 text-green-600' : isActive ? 'bg-indigo-600 text-white' : 'bg-slate-200 text-slate-400'}`}>
-                               {doc.icon}
-                            </div>
-                            <div>
-                               <h4 className={`font-black text-xs ${isActive ? 'text-indigo-900' : 'text-slate-700'}`}>{doc.label}</h4>
-                            </div>
-                         </div>
-                         {status === 'verified' && <CheckCircle2 className="w-4 h-4 text-green-600" />}
-                      </button>
-                    );
-                  })}
-                </div>
-
-                <div className="flex-1 p-10 overflow-y-auto bg-white flex flex-col items-center justify-center">
-                   {activeDoc ? (
-                     <div className="w-full max-w-lg space-y-8 animate-in fade-in slide-in-from-bottom-2">
-                        <div className="flex items-center gap-6">
-                           <div className="p-5 bg-indigo-50 text-indigo-600 rounded-[2rem] border border-indigo-100 shadow-inner">
-                              {activeDoc.icon}
-                           </div>
-                           <div>
-                              <h3 className="text-3xl font-black text-slate-800 tracking-tight">{activeDoc.label}</h3>
-                              <p className="text-sm text-slate-500 font-medium">{activeDoc.desc}</p>
-                           </div>
-                        </div>
-
-                        {activeVerifiedData ? (
-                          <div className="space-y-6">
-                             <div className="relative aspect-[4/3] w-full bg-slate-100 rounded-[2.5rem] overflow-hidden border-2 border-slate-200 shadow-xl">
-                                <img src={activeVerifiedData.dataUrl} className="w-full h-full object-cover" alt="Preview" />
-                             </div>
-                             <div className="flex gap-4">
-                                <button onClick={() => removeDocument(activeDoc.id)} className="flex-1 py-4 bg-slate-50 text-slate-400 font-black rounded-2xl border border-slate-200 hover:text-red-500 text-xs uppercase tracking-widest">
-                                   <Trash2 className="w-4 h-4 mx-auto" /> Reset
-                                </button>
-                                {activeVerifiedData.status === 'verified' && (
-                                  <div className="flex-[2] py-4 bg-green-500 text-white font-black rounded-2xl flex items-center justify-center gap-3 text-xs uppercase tracking-widest">
-                                     <Check className="w-5 h-5" /> Verified
-                                  </div>
-                                )}
-                             </div>
-                          </div>
-                        ) : (
-                          <div onClick={() => fileInputRef.current?.click()} className="aspect-[16/9] border-4 border-dashed border-slate-100 rounded-[3rem] bg-slate-50 flex flex-col items-center justify-center cursor-pointer hover:border-indigo-200 transition-all group">
-                             <Upload className="w-10 h-10 text-slate-300 mb-4 group-hover:scale-110 transition-transform" />
-                             <p className="font-black text-slate-400 group-hover:text-indigo-400 transition-colors">Select & Upload Image</p>
-                             <input type="file" ref={fileInputRef} onChange={handleFileUpload} accept="image/*" className="hidden" />
-                          </div>
-                        )}
-                     </div>
-                   ) : (
-                     <div className="text-center opacity-40">
-                        <FileText className="w-16 h-16 mx-auto mb-4" />
-                        <p className="font-black">Select a document type to verify</p>
-                     </div>
-                   )}
-                </div>
-              </div>
-           </div>
-        </div>
-      )}
-
       {/* Hero Header */}
-      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-12">
-        <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-indigo-50 text-indigo-600 rounded-lg text-[10px] font-black uppercase tracking-widest border border-indigo-100 mb-4">
-             <Star className="w-3 h-3 fill-indigo-600" /> Scholarship Hub
+      <div className="bg-gradient-to-r from-indigo-900 via-indigo-800 to-blue-900 rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden">
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur-md rounded-full text-[11px] font-black uppercase tracking-wider text-amber-300 border border-white/10 mb-3">
+              <Sparkles className="w-3.5 h-3.5" /> Direct Financial Aid & Govt Scheme Discovery
+            </div>
+            <h1 className="text-3xl sm:text-4xl font-black tracking-tight">
+              Verified Scholarships For You
+            </h1>
+            <p className="text-indigo-200 text-xs sm:text-sm font-bold mt-1.5 max-w-xl">
+              Real-time matching across Central NSP, State Departments, and Tata & Reliance Corporate CSR programs.
+            </p>
           </div>
-          <h1 className="text-5xl font-black text-slate-800 tracking-tighter">Available Schemes</h1>
-          <p className="text-slate-500 mt-2 font-medium text-lg">Opportunities matching your socioeconomic profile.</p>
+
+          <div className="flex items-center gap-4 bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/10 shrink-0">
+            <div>
+              <p className="text-[10px] font-black uppercase text-indigo-300 tracking-wider">Your Domicile & Category</p>
+              <p className="text-sm font-black text-white">{user.locality || "All India"} • {user.caste || "General"}</p>
+              <p className="text-[11px] font-bold text-emerald-400 mt-0.5">
+                {rankedSchemes.filter(s => s.matchData.isEligible).length} Highly Eligible Schemes Found
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Filter & Search Bar */}
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+        {/* Search Input */}
+        <div className="relative w-full md:w-96">
+          <Search className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
+          <input
+            type="text"
+            placeholder="Search by scholarship, state, or provider..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-11 pr-4 py-3 bg-white rounded-2xl border border-slate-200 font-bold text-xs focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 outline-none transition-all"
+          />
+          {searchQuery && (
+            <button onClick={() => setSearchQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+              <X className="w-3.5 h-3.5" />
+            </button>
+          )}
         </div>
 
-        <div className="flex items-center gap-4 relative" ref={filterRef}>
-           <button onClick={() => setIsFilterOpen(!isFilterOpen)} className="flex items-center gap-3 bg-white px-6 py-4 rounded-2xl border border-slate-200 shadow-sm font-black text-xs uppercase tracking-widest text-slate-700 min-w-[180px] justify-between transition-all hover:border-indigo-200">
-              <div className="flex items-center gap-3"><Filter className="w-4 h-4 text-indigo-500" /> {filter}</div>
-              <ChevronDown className={`w-4 h-4 text-slate-300 transition-transform ${isFilterOpen ? 'rotate-180' : ''}`} />
-           </button>
+        {/* Filter Pills */}
+        <div className="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-1">
+          {(['All', 'Central Govt', 'State Govt', 'Corporate CSR', 'Bookmarked'] as const).map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setFilter(tab)}
+              className={`px-4 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider whitespace-nowrap transition-all ${
+                filter === tab 
+                  ? 'bg-indigo-600 text-white shadow-md' 
+                  : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200'
+              }`}
+            >
+              {tab === 'Bookmarked' ? `★ Saved (${bookmarkedSet.size})` : tab}
+            </button>
+          ))}
+        </div>
+      </div>
 
-           {isFilterOpen && (
-             <div className="absolute right-0 top-full mt-3 w-56 bg-white rounded-3xl shadow-xl border border-slate-100 p-2 z-30">
-                {['All', 'Government', 'Private'].map(option => (
-                  <button key={option} onClick={() => { setFilter(option); setIsFilterOpen(false); }} className={`w-full text-left px-5 py-3.5 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] transition-all ${filter === option ? 'bg-indigo-600 text-white' : 'text-slate-600 hover:bg-slate-50'}`}>
-                    {option}
+      {/* Schemes Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {rankedSchemes.map((scheme) => {
+          const isSaved = bookmarkedSet.has(scheme.id);
+          const currentStatus = appliedMap.get(scheme.id);
+          const matchPercent = scheme.matchData.score;
+          const title = scheme.title[lang] || scheme.title['en'];
+          const benefits = scheme.benefits[lang] || scheme.benefits['en'];
+
+          return (
+            <div 
+              key={scheme.id}
+              className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm hover:shadow-xl transition-all flex flex-col justify-between group border-transparent hover:border-indigo-100"
+            >
+              <div>
+                {/* Header Tags */}
+                <div className="flex items-center justify-between gap-2 mb-4">
+                  <span className={`px-3 py-1 rounded-xl text-[10px] font-black uppercase tracking-wider ${
+                    scheme.providerType === 'Central Govt' 
+                      ? 'bg-orange-50 text-orange-600 border border-orange-200' 
+                      : scheme.providerType === 'State Govt'
+                      ? 'bg-emerald-50 text-emerald-600 border border-emerald-200'
+                      : 'bg-blue-50 text-blue-600 border border-blue-200'
+                  }`}>
+                    {scheme.providerType}
+                  </span>
+
+                  <div className="flex items-center gap-2">
+                    <span className={`px-2.5 py-1 rounded-lg text-[10px] font-black ${
+                      matchPercent >= 80 
+                        ? 'bg-emerald-50 text-emerald-700' 
+                        : matchPercent >= 60 
+                        ? 'bg-indigo-50 text-indigo-700' 
+                        : 'bg-slate-100 text-slate-500'
+                    }`}>
+                      {matchPercent}% Match
+                    </span>
+                    <button 
+                      onClick={() => toggleBookmark(scheme.id)}
+                      className="p-1.5 rounded-lg text-slate-400 hover:text-amber-500 hover:bg-slate-50 transition-colors"
+                      title={isSaved ? "Remove Bookmark" : "Save Scheme"}
+                    >
+                      {isSaved ? <BookmarkCheck className="w-4 h-4 text-amber-500" /> : <Bookmark className="w-4 h-4" />}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Grant Amount Highlight */}
+                <div className="mb-3">
+                  <p className="text-xs font-black uppercase text-slate-400 tracking-wider">Financial Grant</p>
+                  <p className="text-lg font-black text-emerald-600 tracking-tight">{scheme.amountDisplay}</p>
+                </div>
+
+                {/* Scheme Title */}
+                <h3 className="text-base font-black text-slate-800 tracking-tight line-clamp-2 group-hover:text-indigo-600 transition-colors mb-2">
+                  {title}
+                </h3>
+                <p className="text-xs font-bold text-slate-400 mb-4">{scheme.provider}</p>
+
+                {/* Eligibility Badges */}
+                <div className="space-y-1.5 mb-6 text-[11px] font-bold text-slate-600">
+                  <div className="flex items-center gap-2">
+                    <MapPin className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
+                    <span>Region: {scheme.state}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Wallet className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
+                    <span>Income Cap: Up to ₹{(scheme.incomeLimit / 100000).toFixed(1)} Lakhs</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Clock className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
+                    <span>Deadline: {new Date(scheme.deadline).toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Actions & Tracking Bottom */}
+              <div className="pt-4 border-t border-slate-100 space-y-3">
+                <div className="flex items-center justify-between text-[11px]">
+                  <span className="font-bold text-slate-400">Application Status:</span>
+                  <select
+                    value={currentStatus || 'Saved'}
+                    onChange={(e) => updateApplicationStatus(scheme.id, title, e.target.value)}
+                    className="bg-slate-50 border border-slate-200 text-slate-700 font-bold px-2 py-1 rounded-lg text-xs outline-none cursor-pointer"
+                  >
+                    <option value="Saved">📌 Saved</option>
+                    <option value="Applied">📤 Applied</option>
+                    <option value="Under Review">⏳ Under Review</option>
+                    <option value="Disbursed">✅ Disbursed</option>
+                  </select>
+                </div>
+
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setSelectedScheme(scheme)}
+                    className="flex-1 py-2.5 bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold rounded-xl text-xs transition-colors text-center"
+                  >
+                    View Criteria
                   </button>
+                  <a
+                    href={scheme.applicationUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-black rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-md transition-all active:scale-95"
+                  >
+                    Apply Now <ArrowUpRight className="w-3.5 h-3.5" />
+                  </a>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Detailed Scheme Breakdown Modal */}
+      {selectedScheme && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in">
+          <div className="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-slate-100 max-h-[90vh] overflow-y-auto space-y-6">
+            <div className="flex justify-between items-start">
+              <div>
+                <span className="text-[10px] font-black uppercase tracking-wider text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">
+                  {selectedScheme.providerType}
+                </span>
+                <h2 className="text-2xl font-black text-slate-800 mt-2">
+                  {selectedScheme.title[lang] || selectedScheme.title['en']}
+                </h2>
+                <p className="text-xs font-bold text-slate-400 mt-0.5">{selectedScheme.provider}</p>
+              </div>
+              <button 
+                onClick={() => setSelectedScheme(null)}
+                className="p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Match Analysis */}
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 space-y-2">
+              <div className="flex justify-between items-center">
+                <span className="text-xs font-black text-slate-700">Profile Match Evaluation</span>
+                <span className="text-sm font-black text-indigo-600">{selectedScheme.matchData.score}% Fit</span>
+              </div>
+              <ul className="space-y-1 text-xs font-bold text-slate-600">
+                {selectedScheme.matchData.reasons.map((r: string, idx: number) => (
+                  <li key={idx} className="flex items-center gap-2 text-emerald-700">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" /> {r}
+                  </li>
                 ))}
-             </div>
-           )}
-        </div>
-      </div>
+                {selectedScheme.matchData.missingCriteria.map((m: string, idx: number) => (
+                  <li key={idx} className="flex items-center gap-2 text-amber-700">
+                    <AlertCircle className="w-3.5 h-3.5 text-amber-500 shrink-0" /> {m}
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-      {/* AI Personalized Section */}
-      {(user.locality || user.income || user.caste) && (
-        <section className="mb-16 bg-gradient-to-br from-indigo-700 to-indigo-900 rounded-[3.5rem] p-10 md:p-14 text-white relative overflow-hidden shadow-2xl shadow-indigo-200">
-           <div className="absolute top-0 right-0 -mr-20 -mt-20 opacity-10">
-              <Sparkles className="w-96 h-96" />
-           </div>
-           <div className="relative z-10">
-              <div className="flex items-center gap-3 mb-8">
-                 <div className="bg-white/20 p-3 rounded-2xl backdrop-blur-md">
-                    <Sparkles className="w-6 h-6 text-yellow-300" />
-                 </div>
-                 <h2 className="text-3xl font-black tracking-tight">AI Recommended For You</h2>
+            {/* Required Documents Checklist */}
+            <div>
+              <h4 className="text-xs font-black uppercase text-slate-400 tracking-wider mb-3">
+                Required Verification Documents
+              </h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {selectedScheme.requiredDocs.map((docId) => {
+                  const isVerified = user.verifiedDocuments?.[docId]?.status === 'verified';
+                  return (
+                    <div key={docId} className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100 text-xs font-bold text-slate-700">
+                      <span className="capitalize">{docId.replace('-', ' ')}</span>
+                      {isVerified ? (
+                        <span className="text-emerald-600 flex items-center gap-1 font-black">
+                          <Check className="w-3.5 h-3.5" /> Ready
+                        </span>
+                      ) : (
+                        <span className="text-amber-500 font-bold">Needs Upload</span>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
-              
-              {loadingAi ? (
-                <div className="py-20 flex flex-col items-center justify-center">
-                   <Loader2 className="w-10 h-10 animate-spin text-white mb-4" />
-                   <p className="font-black text-xs uppercase tracking-widest text-indigo-200">Matching with your profile...</p>
-                </div>
-              ) : aiSchemes.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                   {aiSchemes.map((rec, i) => (
-                     <div key={i} className="bg-white/10 backdrop-blur-xl border border-white/20 p-8 rounded-[2.5rem] flex flex-col justify-between group hover:bg-white/20 transition-all border border-transparent hover:border-white/40">
-                        <div>
-                           <div className="flex justify-between items-start mb-4">
-                              <span className="bg-white text-indigo-700 px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest shadow-sm">AI Top Match</span>
-                              <Wallet className="w-5 h-5 text-indigo-200" />
-                           </div>
-                           <h3 className="text-xl font-black mb-2">{rec.title}</h3>
-                           <p className="text-sm text-indigo-100/70 font-medium leading-relaxed mb-6">{rec.description}</p>
-                        </div>
-                        <div className="flex gap-4">
-                           <a 
-                             href="https://scholarships.gov.in" 
-                             target="_blank" 
-                             rel="noopener noreferrer"
-                             aria-label={`Apply for ${rec.title}`}
-                             className="flex-1 py-4 bg-white text-indigo-700 font-black rounded-xl text-center text-xs uppercase tracking-widest hover:scale-105 transition-transform flex items-center justify-center gap-2"
-                           >
-                             Apply Now <ArrowUpRight className="w-4 h-4" />
-                           </a>
-                           <a 
-                             href="https://scholarships.gov.in" 
-                             target="_blank" 
-                             rel="noopener noreferrer"
-                             className="px-6 py-4 bg-white/10 text-white border border-white/20 font-black rounded-xl text-xs uppercase tracking-widest hover:bg-white/20 transition-all"
-                           >
-                             Details
-                           </a>
-                        </div>
-                     </div>
-                   ))}
-                </div>
-              ) : (
-                <div className="text-center py-10 opacity-60">
-                   <p className="text-sm font-medium">No direct AI matches found for your current profile. Try adding more details.</p>
-                </div>
-              )}
-           </div>
-        </section>
+            </div>
+
+            {/* Official Portal Apply Button */}
+            <div className="pt-4 border-t border-slate-100 flex gap-4">
+              <button
+                onClick={() => setSelectedScheme(null)}
+                className="flex-1 py-3.5 border border-slate-200 text-slate-700 font-bold rounded-xl text-xs hover:bg-slate-50"
+              >
+                Close
+              </button>
+              <a
+                href={selectedScheme.applicationUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="flex-1 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-black rounded-xl text-xs flex items-center justify-center gap-2 shadow-md"
+              >
+                Go to Official Application Portal <ArrowUpRight className="w-4 h-4" />
+              </a>
+            </div>
+          </div>
+        </div>
       )}
-
-      {/* Main List */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-        <div className="lg:col-span-4">
-           <div className="sticky top-28 space-y-8">
-              <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm">
-                 <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-green-500" /> Verification Status
-                 </h3>
-                 <div className="space-y-4">
-                    {DOCUMENT_DEFINITIONS.slice(0, 4).map(doc => (
-                       <div key={doc.id} className="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                          <span className="text-xs font-black text-slate-600">{doc.label}</span>
-                          {verifiedDocs[doc.id]?.status === 'verified' ? (
-                            <Check className="w-4 h-4 text-green-500" />
-                          ) : (
-                            <X className="w-4 h-4 text-slate-300" />
-                          )}
-                       </div>
-                    ))}
-                 </div>
-                 <button onClick={() => setIsChecklistOpen(true)} className="w-full mt-6 py-4 bg-indigo-600 text-white font-black rounded-2xl text-xs uppercase tracking-widest shadow-lg shadow-indigo-100 hover:bg-indigo-700 transition-all">
-                    Upload & Verify Documents
-                 </button>
-              </div>
-
-              <div className="bg-amber-50 border border-amber-100 p-8 rounded-[2.5rem]">
-                 <div className="flex items-center gap-3 mb-4">
-                    <Info className="w-5 h-5 text-amber-600" />
-                    <h4 className="font-black text-amber-900 text-sm">Eligibility Note</h4>
-                 </div>
-                 <p className="text-xs text-amber-800 leading-relaxed font-medium">
-                    Please ensure your income and caste documents are valid for the current financial year to avoid rejection in government portals.
-                 </p>
-              </div>
-           </div>
-        </div>
-
-        <div className="lg:col-span-8 space-y-8">
-           {filteredSchemes.map((scheme) => {
-             const title = typeof scheme.title === 'string' ? scheme.title : (scheme.title[lang] || scheme.title['en']);
-             const benefits = typeof scheme.benefits === 'string' ? scheme.benefits : (scheme.benefits[lang] || scheme.benefits['en']);
-             const eligibility = Array.isArray(scheme.eligibility) ? scheme.eligibility : (scheme.eligibility[lang] || scheme.eligibility['en']);
-             
-             return (
-               <div key={scheme.id} className="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-sm hover:shadow-xl transition-all group border-transparent hover:border-indigo-100">
-                 <div className="flex flex-col md:flex-row justify-between gap-8">
-                    <div className="flex-1 space-y-6">
-                       <div className="flex items-center gap-3">
-                          <span className={`px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest ${scheme.provider === 'Government' ? 'bg-orange-50 text-orange-600 border border-orange-100' : 'bg-blue-50 text-blue-600 border border-blue-100'}`}>
-                             {scheme.provider} SCHEME
-                          </span>
-                       </div>
-                       <div>
-                          <h3 className="text-3xl font-black text-slate-800 tracking-tighter mb-2 group-hover:text-indigo-600 transition-colors">{title}</h3>
-                          <p className="text-slate-500 font-medium text-sm leading-relaxed">{benefits}</p>
-                       </div>
-                       <div className="flex flex-wrap gap-2 pt-2">
-                          {eligibility.map((el, idx) => (
-                            <span key={idx} className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 rounded-lg text-[10px] font-bold text-slate-600 border border-slate-100">
-                               <CheckCircle2 className="w-3.5 h-3.5 text-green-500" /> {el}
-                            </span>
-                          ))}
-                       </div>
-                    </div>
-                    <div className="md:w-64 flex flex-col gap-4 shrink-0 justify-center">
-                       <a 
-                         href={scheme.url} 
-                         target="_blank" 
-                         rel="noopener noreferrer"
-                         aria-label={`Official application portal for ${title}`}
-                         className="w-full py-5 bg-indigo-600 text-white font-black rounded-2xl flex items-center justify-center gap-3 shadow-lg shadow-indigo-100 hover:bg-indigo-700 hover:scale-[1.02] transition-all text-xs uppercase tracking-widest group/btn"
-                       >
-                         Apply Now <ArrowUpRight className="w-5 h-5 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
-                       </a>
-                       <a 
-                         href={scheme.url} 
-                         target="_blank" 
-                         rel="noopener noreferrer"
-                         className="w-full py-5 bg-slate-50 text-slate-600 font-black rounded-2xl border border-slate-200 flex items-center justify-center gap-2 hover:bg-white hover:border-indigo-200 hover:text-indigo-600 transition-all text-xs uppercase tracking-widest"
-                       >
-                         Learn More
-                       </a>
-                    </div>
-                 </div>
-               </div>
-             );
-           })}
-        </div>
-      </div>
     </div>
   );
 };
