@@ -181,85 +181,8 @@ export const NAVBAR_LINKS = [
   { id: 'profile', name: 'profile', href: '/profile', icon: <GraduationCap className="w-5 h-5" /> },
 ];
 
-export const SCHOOL_STREAMS = [
-  "Commerce", 
-  "Physics, Chemistry with Maths (PCM)", 
-  "Physics, Chemistry with Bio (PCB)", 
-  "Physics, Chemistry, Maths with Bio (PCMB)", 
-  "Humanities & Arts"
-];
-
-export const COLLEGE_FIELDS = [
-  "Engineering", "MBBS", "Law", "Management", "Agriculture", "Pure Sciences", "Design"
-];
-
-const generateQuestions = () => {
-  const qs: Question[] = [];
-
-  const addQ = (id: number, subject: string, type: 'theoretical' | 'solving', en: string, hi: string, opts: string[], correct: number, audience: any, difficulty: 1 | 2 | 3) => {
-    qs.push({
-      id,
-      subject,
-      type,
-      difficulty,
-      audience,
-      text: { en, hi, bn: en, ta: en, te: en, kn: en, ml: en, mr: hi, ur: hi },
-      options: { en: opts, hi: opts, bn: opts, ta: opts, te: opts, kn: opts, ml: opts, mr: opts, ur: opts },
-      correctAnswerIdx: correct
-    });
-  };
-
-  // Generate Aptitude Questions (Pool of 200)
-  for (let i = 0; i < 200; i++) {
-    const diff = (i % 3) + 1 as 1 | 2 | 3;
-    const type = i % 2 === 0 ? 'solving' : 'theoretical';
-    const num1 = Math.floor(Math.random() * 100) + 10;
-    const num2 = Math.floor(Math.random() * 50) + 5;
-    
-    addQ(
-      10000 + i,
-      "Aptitude",
-      type,
-      type === 'solving' 
-        ? `Find the value: ${num1} x ${num2} / 2 + 15. What is the final result?` 
-        : `If a train travels at ${num1} km/h, how much time is needed to cross a ${num2 * 10}m bridge?`,
-      type === 'solving'
-        ? `मान ज्ञात करें: ${num1} x ${num2} / 2 + 15. अंतिम परिणाम क्या है?`
-        : `यदि एक ट्रेन ${num1} किमी/घंटा की गति से चलती है, तो ${num2 * 10} मीटर लंबे पुल को पार करने के लिए कितना समय चाहिए?`,
-      [`${(num1 * num2 / 2) + 15}`, `${(num1 * num2 / 2)}`, `45`, `12`],
-      0,
-      'Both',
-      diff
-    );
-  }
-
-  const allFields = [...SCHOOL_STREAMS, ...COLLEGE_FIELDS];
-  allFields.forEach((field, fIdx) => {
-    const baseId = 30000 + (fIdx * 1000);
-    const audience = SCHOOL_STREAMS.includes(field) ? 'School' : 'College';
-    
-    // Generate 150 questions per field
-    for (let i = 0; i < 150; i++) {
-      const diff = (i % 3) + 1 as 1 | 2 | 3;
-      const type = i < 75 ? 'theoretical' : 'solving';
-      addQ(
-        baseId + i,
-        field,
-        type,
-        `[${field}] ${type === 'solving' ? 'Practical application' : 'Theoretical concept'} of topic #${i+1}. Solve or identify correctly.`,
-        `[${field}] ${type === 'solving' ? 'व्यावहारिक अनुप्रयोग' : 'सैद्धांतिक अवधारणा'} विषय #${i+1}। सही ढंग से पहचानें।`,
-        [`Option A (Correct)`, `Option B`, `Option C`, `Option D`],
-        0,
-        audience,
-        diff
-      );
-    }
-  });
-
-  return qs;
-};
-
-export const MOCK_TEST_QUESTIONS = generateQuestions();
+export { SCHOOL_STREAMS, COLLEGE_FIELDS } from './services/questionBank';
+export { MOCK_TEST_QUESTIONS } from './services/mockTestService';
 
 export const SAMPLE_SCHEMES = [
   {

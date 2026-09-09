@@ -10,6 +10,7 @@ import { UserProfile, Question, TestAttempt } from '../types';
 import { getDetailedAnalysis, getImprovementResources } from '../services/geminiService';
 import { databaseService } from '../services/databaseService';
 import { storageService } from '../services/storageService';
+import { mockTestService } from '../services/mockTestService';
 
 const ACTIVE_TEST_STORAGE_KEY = "margdarshak_active_test_session";
 
@@ -87,39 +88,14 @@ const MockTest: React.FC<MockTestProps> = ({ user, updateProfile, strings }) => 
       return;
     }
 
-    const answeredIds = new Set(user.answeredQuestionIds || []);
-    
-    // Pool for Aptitude (10 questions)
-    const aptitudePool = shuffle(MOCK_TEST_QUESTIONS.filter(q => 
-      q.subject === 'Aptitude' && !answeredIds.has(q.id)
-    ));
-
-    // Pool for Subject (20 questions)
-    const subjectPool = MOCK_TEST_QUESTIONS.filter(q =>
-      q.subject === fieldOfStudy && 
-      (q.audience === 'Both' || q.audience === educationLevel) &&
-      !answeredIds.has(q.id)
-    );
-
-    const theoreticalSubject = shuffle(subjectPool.filter(q => q.type === 'theoretical'));
-    const solvingSubject = shuffle(subjectPool.filter(q => q.type === 'solving'));
-
-    const selectedAptitude = aptitudePool.slice(0, 10);
-    const selectedTheoretical = theoreticalSubject.slice(0, 10);
-    const selectedSolving = solvingSubject.slice(0, 10);
-
-    const selectedSubject = [...selectedTheoretical, ...selectedSolving];
-    
-    if (selectedSubject.length < 20) {
-      const remainingPool = shuffle(subjectPool.filter(q => !selectedSubject.find(s => s.id === q.id)));
-      selectedSubject.push(...remainingPool.slice(0, 20 - selectedSubject.length));
-    }
-
-    let finalSession = shuffle([...selectedAptitude, ...selectedSubject]);
-
-    if (finalSession.length === 0) {
-      finalSession = shuffle(MOCK_TEST_QUESTIONS.filter(q => q.subject === fieldOfStudy || q.subject === 'Aptitude')).slice(0, 30);
-    }
+    const finalSession = mockTestService.generateTestSession({
+      fieldOfStudy,
+      educationLevel,
+      answeredQuestionIds: user.answeredQuestionIds || [],
+      totalQuestions: 30,
+      aptitudeCount: 10,
+      subjectCount: 20
+    });
 
     setSessionQuestions(finalSession);
     setAttempts({});
