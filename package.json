@@ -6,19 +6,22 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "tsx tests/stage1_load_test.mjs",
+    "test:stage1": "tsx tests/stage1_load_test.mjs"
   },
   "dependencies": {
-    "react-router-dom": "^7.13.0",
-    "lucide-react": "^0.563.0",
     "@google/genai": "^1.40.0",
+    "lucide-react": "^0.563.0",
+    "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "recharts": "^3.7.0",
-    "react": "^19.2.4"
+    "react-router-dom": "^7.13.0",
+    "recharts": "^3.7.0"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
     "@vitejs/plugin-react": "^5.0.0",
+    "tsx": "^4.23.13",
     "typescript": "~5.8.2",
     "vite": "^6.2.0"
   }

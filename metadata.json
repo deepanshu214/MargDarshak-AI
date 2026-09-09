@@ -1,0 +1,7 @@
+{
+  "name": "MargDarshak AI",
+  "description": "An AI-powered career and scholarship guidance platform specifically designed for underprivileged Indian students to discover government schemes, take talent evaluation tests, and receive personalized academic mentorship.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
